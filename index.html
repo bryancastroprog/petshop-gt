@@ -1765,7 +1765,7 @@ label {
     <div class="section-head fade-in">
       <span class="eyebrow">Nuestras Mascotas</span>
       <h2>Encuentra a tu nuevo mejor amigo</h2>
-      <p class="lead">Cada mascota llega con vacunas alía, certificación de salud y el cariño de nuestro equipo. Tu familia los está esperando.</p>
+      <p class="lead">Cada mascota llega con vacunas al día, certificación de salud y el cariño de nuestro equipo. Tu familia los está esperando.</p>
     </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:2rem;" class="fade-in">
       <button class="cat-filter active" data-cat="todos">Todos</button>
@@ -2225,59 +2225,551 @@ label {
 
 <!-- ============================================ JAVASCRIPT ============================================ -->
 <script>
+/* ============================================
+   DEMO DATA
+   ============================================ */
+const DEMO_MASCOTAS = [
+  { id: 1, nombre: "Golden Retriever", estado: "venta", precio: "Q8,500", edad: "3 meses", descripcion: "Cachorro Golden Retriever pedigree A+, vacunas al día, desparasitado. Carácter dócil y familiar.", fotos: [], color: "#F59E0B" },
+  { id: 2, nombre: "French Bulldog", estado: "venta", precio: "Q12,000", edad: "2 meses", descripcion: "Bulldog Francés con certificación, padres campeones. Ideal para apartamento.", fotos: [], color: "#8B5CF6" },
+  { id: 3, nombre: "Labrador Negro", estado: "adopcion", precio: null, edad: "1 año", descripcion: "Labrador negro rescatado, sociable con niños y otros perros. Vacunas completas.", fotos: [], color: "#1C2D52" },
+  { id: 4, nombre: "Shih Tzu", estado: "venta", precio: "Q6,500", edad: "3 meses", descripcion: "Shih Tzu con pedigree, pelaje hermoso. Muy cariñoso y adaptable.", fotos: [], color: "#EC4899" },
+  { id: 5, nombre: "Poodle Toy", estado: "venta", precio: "Q7,200", edad: "4 meses", descripcion: "Poodle Toy color albaricoque, hipoalergénico. Inteligente y fácil de entrenar.", fotos: [], color: "#F97316" },
+  { id: 6, nombre: "Beagle", estado: "adopcion", precio: null, edad: "8 meses", descripcion: "Beagle juguetón en adopción responsable. Buena salud, le encantan los niños.", fotos: [], color: "#22BFC0" },
+];
+
+const PET_EMOJIS = ["🐕", "🐶", "🦮", "🐩", "🐾"];
+
+/* ============================================
+   NAVBAR scroll + hamburger
+   ============================================ */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 60) navbar.classList.add('scrolled');
+  else navbar.classList.remove('scrolled');
+});
+
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('active');
+  navLinks.classList.toggle('open');
+});
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  hamburger.classList.remove('active');
+  navLinks.classList.remove('open');
+}));
+
+/* ============================================
+   FLOATING PAWS in hero
+   ============================================ */
+(function generatePaws() {
+  const bg = document.getElementById('pawsBg');
+  for (let i = 0; i < 24; i++) {
+    const p = document.createElement('span');
+    p.className = 'paw';
+    p.textContent = '🐾';
+    p.style.left = (Math.random() * 100) + '%';
+    p.style.animationDelay = (Math.random() * 18) + 's';
+    p.style.animationDuration = (12 + Math.random() * 14) + 's';
+    p.style.fontSize = (1.5 + Math.random() * 2.5) + 'rem';
+    bg.appendChild(p);
+  }
+})();
+
+/* ============================================
+   STATS counter animation
+   ============================================ */
+const statNums = document.querySelectorAll('.stat-num[data-target]');
+const countObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const el = e.target;
+      const target = +el.dataset.target;
+      const suffix = el.dataset.suffix || '';
+      let cur = 0;
+      const step = Math.max(1, target / 50);
+      const tick = () => {
+        cur += step;
+        if (cur >= target) { el.textContent = target + suffix; return; }
+        el.textContent = Math.floor(cur) + suffix;
+        requestAnimationFrame(tick);
+      };
+      tick();
+      countObs.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+statNums.forEach(s => countObs.observe(s));
+
+/* ============================================
+   FADE-IN on scroll
+   ============================================ */
+const fadeEls = document.querySelectorAll('.fade-in');
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+fadeEls.forEach(e => fadeObs.observe(e));
+
+/* ============================================
+   CATALOGO render & filters
+   ============================================ */
+let MASCOTAS = [];
+const petsGrid = document.getElementById('petsGrid');
+
+function renderPets(filter = 'all', breed = null) {
+  petsGrid.innerHTML = '';
+  let list = MASCOTAS.slice();
+  if (filter !== 'all') list = list.filter(p => p.estado === filter);
+  if (breed) list = list.filter(p => p.nombre.toLowerCase().includes(breed.toLowerCase()));
+  if (!list.length) {
+    petsGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--gray-500);">No hay mascotas que coincidan con este filtro.</div>';
+    return;
+  }
+  list.forEach((p, i) => {
+    const emoji = PET_EMOJIS[i % PET_EMOJIS.length];
+    const card = document.createElement('div');
+    card.className = 'pet-card';
+    card.innerHTML = `
+      <div class="pet-img" style="background: linear-gradient(135deg, ${p.color}, ${p.color}99);">
+        <span class="pet-badge ${p.estado}">${p.estado === 'venta' ? 'En Venta' : 'En Adopción'}</span>
+        ${emoji}
+      </div>
+      <div class="pet-body">
+        <h3 class="pet-name">${p.nombre}</h3>
+        <div class="pet-age">ðŸ“… ${p.edad}</div>
+        <p class="pet-desc">${p.descripcion}</p>
+        <div class="pet-foot">
+          <div class="pet-price ${p.estado === 'adopcion' ? 'adopt' : ''}">${p.precio || 'Adopción'}</div>
+          <div class="pet-actions">
+            <button class="pet-btn" title="Ver más" data-action="view">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </button>
+            <button class="pet-btn" title="Agendar visita" data-action="book">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+    card.addEventListener('click', (ev) => {
+      const action = ev.target.closest('[data-action]')?.dataset.action;
+      if (action === 'book') {
+        document.getElementById('agenda').scrollIntoView({ behavior: 'smooth' });
+      } else {
+        openModal(p, emoji);
+      }
+    });
+    petsGrid.appendChild(card);
+  });
+}
+
+// Filters
+document.querySelectorAll('#filters .filter').forEach(f => {
+  f.addEventListener('click', () => {
+    document.querySelectorAll('#filters .filter').forEach(x => x.classList.remove('active'));
+    f.classList.add('active');
+    const filter = f.dataset.filter;
+    const breed = f.dataset.breed;
+    if (breed) renderPets('all', breed);
+    else renderPets(filter || 'all');
+  });
+});
+
+// Modal
+const modal = document.getElementById('modal');
+const modalClose = document.getElementById('modalClose');
+
+function openModal(p, emoji) {
+  document.getElementById('modalHero').style.background = `linear-gradient(135deg, ${p.color}, ${p.color}99)`;
+  document.getElementById('modalHero').textContent = emoji;
+  const badge = document.getElementById('modalBadge');
+  badge.className = `pet-badge ${p.estado}`;
+  badge.style.position = 'static';
+  badge.style.display = 'inline-block';
+  badge.style.marginBottom = '0.75rem';
+  badge.textContent = p.estado === 'venta' ? 'En Venta' : 'En Adopción';
+  document.getElementById('modalTitle').textContent = p.nombre;
+  document.getElementById('metaAge').textContent = p.edad;
+  document.getElementById('metaState').textContent = p.estado === 'venta' ? 'Disponible' : 'Adopción';
+  document.getElementById('metaPrice').textContent = p.precio || 'Adopción responsable';
+  document.getElementById('modalDesc').textContent = p.descripcion;
+  // thumbs
+  const thumbs = document.getElementById('modalThumbs');
+  thumbs.innerHTML = '';
+  for (let i = 0; i < 4; i++) {
+    const t = document.createElement('div');
+    t.className = 'modal-thumb';
+    t.style.background = `linear-gradient(${135 + i*30}deg, ${p.color}, ${p.color}66)`;
+    t.textContent = PET_EMOJIS[i % PET_EMOJIS.length];
+    thumbs.appendChild(t);
+  }
+  // WhatsApp link
+  const msg = encodeURIComponent(`Hola PetShop GT, me interesa ${p.nombre} (${p.edad}). ¿Podemos coordinar una visita?`);
+  document.getElementById('modalWa').href = `https://wa.me/50254626994?text=${msg}`;
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+modalClose.addEventListener('click', closeModal);
+modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+function closeModal() { modal.classList.remove('active'); document.body.style.overflow = ''; }
+
+// Load
+async function loadMascotas() {
+  try {
+    const r = await fetch('/api/mascotas');
+    if (!r.ok) throw new Error('fallback');
+    MASCOTAS = await r.json();
+    if (!Array.isArray(MASCOTAS) || !MASCOTAS.length) throw new Error('empty');
+  } catch {
+    MASCOTAS = DEMO_MASCOTAS;
+  }
+  renderPets();
+  populateRazas();
+}
+function populateRazas() {
+  const sel1 = document.getElementById('razaSelect');
+  const sel2 = document.getElementById('contactRaza');
+  [sel1, sel2].forEach(sel => {
+    if (!sel) return;
+    sel.innerHTML = '<option value="">Selecciona una raza...</option>';
+    MASCOTAS.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.nombre;
+      opt.textContent = p.nombre;
+      sel.appendChild(opt);
+    });
+    const o = document.createElement('option');
+    o.value = 'otro';
+    o.textContent = 'Otro';
+    sel.appendChild(o);
+  });
+}
+loadMascotas();
+
+/* ============================================
+   AGENDA — 3-step booking
+   ============================================ */
+const booking = { servicio: null, fecha: null, hora: null, datos: {} };
+let currentStep = 1;
+
+function setStep(n) {
+  currentStep = n;
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  document.querySelector(`.step-panel[data-panel="${n}"]`).classList.add('active');
+  document.querySelectorAll('.step-dot').forEach(d => {
+    const s = +d.dataset.step;
+    d.classList.remove('active', 'done');
+    if (s < n) d.classList.add('done');
+    if (s === n) d.classList.add('active');
+  });
+  const pct = ((n - 1) / 3) * (100 - (60 / 820 * 100));
+  document.getElementById('stepsIndicator').style.setProperty('--progress', pct + '%');
+}
+
+// Step 1
+document.querySelectorAll('.service-option').forEach(o => {
+  o.addEventListener('click', () => {
+    document.querySelectorAll('.service-option').forEach(x => x.classList.remove('selected'));
+    o.classList.add('selected');
+    booking.servicio = o.dataset.svc;
+    document.getElementById('next1').disabled = false;
+  });
+});
+document.getElementById('next1').addEventListener('click', () => { buildCalendar(); setStep(2); });
+
+// Pre-select service from service cards
+document.querySelectorAll('.service-btn[data-service]').forEach(b => {
+  b.addEventListener('click', (e) => {
+    e.preventDefault();
+    const svc = b.dataset.service;
+    document.getElementById('agenda').scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => {
+      document.querySelectorAll('.service-option').forEach(x => x.classList.remove('selected'));
+      const target = document.querySelector(`.service-option[data-svc="${svc}"]`);
+      if (target) { target.classList.add('selected'); booking.servicio = svc; document.getElementById('next1').disabled = false; }
+    }, 600);
+  });
+});
+
+// Step 2 — calendar
+function buildCalendar() {
+  const body = document.getElementById('calBody');
+  body.innerHTML = '';
+  const today = new Date();
+  // Find Monday of current week
+  const monday = new Date(today);
+  const wd = (today.getDay() + 6) % 7;
+  monday.setDate(today.getDate() - wd);
+  // 14 days starting Monday
+  const monthNames = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  for (let i = 0; i < 14; i++) {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    const dow = d.getDay(); // 0 sun, 6 sat
+    const isWeekend = (dow === 0 || dow === 6);
+    const isPast = d < new Date(today.toDateString());
+    const day = document.createElement('div');
+    day.className = 'day';
+    if (isWeekend || isPast) day.classList.add('disabled');
+    day.innerHTML = `<span class="day-num">${d.getDate()}</span><span class="day-month">${monthNames[d.getMonth()]}</span>`;
+    if (!isWeekend && !isPast) {
+      day.addEventListener('click', () => selectDay(d, day));
+    }
+    body.appendChild(day);
+  }
+}
+
+async function selectDay(date, el) {
+  document.querySelectorAll('.day').forEach(d => d.classList.remove('selected'));
+  el.classList.add('selected');
+  booking.fecha = date.toISOString().slice(0, 10);
+  booking.hora = null;
+  document.getElementById('next2').disabled = true;
+  document.getElementById('slotsLabel').style.display = 'block';
+  const slotsEl = document.getElementById('slots');
+  slotsEl.innerHTML = '<div style="grid-column:1/-1;color:var(--gray-500);font-size:0.85rem;">Cargando disponibilidad...</div>';
+  let available = ['08:00', '09:00', '10:00', '11:00', '14:00', '15:00', '16:00'];
+  try {
+    const r = await fetch(`/api/disponibilidad?fecha=${booking.fecha}`);
+    if (r.ok) {
+      const j = await r.json();
+      if (Array.isArray(j) && j.length) available = j;
+      else if (j.horarios) available = j.horarios;
+    }
+  } catch {}
+  slotsEl.innerHTML = '';
+  available.forEach(h => {
+    const s = document.createElement('div');
+    s.className = 'slot';
+    s.textContent = h;
+    s.addEventListener('click', () => {
+      document.querySelectorAll('.slot').forEach(x => x.classList.remove('selected'));
+      s.classList.add('selected');
+      booking.hora = h;
+      document.getElementById('next2').disabled = false;
+    });
+    slotsEl.appendChild(s);
+  });
+}
+
+document.getElementById('next2').addEventListener('click', () => setStep(3));
+document.querySelectorAll('[data-back]').forEach(b => b.addEventListener('click', () => setStep(+b.dataset.back)));
+
+// Step 3 — submit
+document.getElementById('submitBooking').addEventListener('click', async () => {
+  const form = document.getElementById('bookingForm');
+  const fd = new FormData(form);
+  const data = Object.fromEntries(fd.entries());
+  if (!data.nombre || !data.telefono || !data.email) {
+    alert('Por favor completa los campos obligatorios.');
+    return;
+  }
+  booking.datos = data;
+  const payload = {
+    servicio: booking.servicio,
+    fecha: booking.fecha,
+    hora: booking.hora,
+    ...data
+  };
+  // Confirmation
+  const svcNames = { conocer: 'Conocer Mascota', grooming: 'Grooming', consulta: 'Consulta' };
+  const summary = document.getElementById('confirmSummary');
+  summary.innerHTML = `
+    <div><span>Servicio:</span><span>${svcNames[booking.servicio] || '—'}</span></div>
+    <div><span>Fecha:</span><span>${booking.fecha || '—'}</span></div>
+    <div><span>Hora:</span><span>${booking.hora || '—'}</span></div>
+    <div><span>Nombre:</span><span>${data.nombre}</span></div>
+    <div><span>Teléfono:</span><span>${data.telefono}</span></div>
+  `;
+  // Pre-fill WhatsApp with booking details
+  const waMsg = encodeURIComponent(`Hola PetShop GT 🐾 Quiero confirmar mi cita:\nâ€¢ Servicio: ${svcNames[booking.servicio]}\nâ€¢ Fecha: ${booking.fecha}\nâ€¢ Hora: ${booking.hora}\nâ€¢ Nombre: ${data.nombre}\nâ€¢ Teléfono: ${data.telefono}`);
+  document.getElementById('waConfirmBtn').href = `https://wa.me/50254626994?text=${waMsg}`;
+  setStep(4);
+});
+
+setStep(1);
+
+/* ============================================
+   GALERIA — masonry & lightbox
+   ============================================ */
+const GAL = [
+  { cat: 'cachorros', img: 'static/mascotas/pet_1.jpg',  h: 260 },
+  { cat: 'cachorros', img: 'static/mascotas/pet_2.jpg',  h: 220 },
+  { cat: 'adultos',   img: 'static/mascotas/pet_3.jpg',  h: 280 },
+  { cat: 'cachorros', img: 'static/mascotas/pet_4.jpg',  h: 240 },
+  { cat: 'adultos',   img: 'static/mascotas/pet_5.jpg',  h: 260 },
+  { cat: 'cachorros', img: 'static/mascotas/pet_6.jpg',  h: 220 },
+  { cat: 'adultos',   img: 'static/mascotas/pet_7.jpg',  h: 280 },
+  { cat: 'cachorros', img: 'static/mascotas/pet_8.jpg',  h: 240 },
+  { cat: 'adultos',   img: 'static/mascotas/pet_9.jpg',  h: 260 },
+  { cat: 'cachorros', img: 'static/mascotas/pet_10.jpg', h: 220 },
+  { cat: 'adultos',   img: 'static/mascotas/pet_11.jpg', h: 280 },
+  { cat: 'cachorros', img: 'static/mascotas/pet_12.jpg', h: 240 },
+  { cat: 'adultos',   img: 'static/mascotas/pet_13.jpg', h: 260 },
+  { cat: 'cachorros', img: 'static/mascotas/pet_14.jpg', h: 220 },
+  { cat: 'adultos',   img: 'static/mascotas/pet_15.jpg', h: 280 },
+];
+
+const masonry = document.getElementById('masonry');
+function renderGallery(filter = 'all') {
+  masonry.innerHTML = '';
+  GAL.filter(g => filter === 'all' || g.cat === filter).forEach(g => {
+    const item = document.createElement('div');
+    item.className = 'masonry-item';
+    item.innerHTML = `
+      <div class="masonry-img" style="height:${g.h}px;"><img src="${g.img}" alt="Mascota PetShop GT" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+      <div class="masonry-overlay">ðŸ”</div>
+    `;
+    item.addEventListener('click', () => {
+      const lb = document.getElementById('lightboxContent');
+      lb.style.background = `linear-gradient(135deg, ${g.color}, ${g.color}99)`;
+      lb.textContent = g.emoji;
+      document.getElementById('lightbox').classList.add('active');
+    });
+    masonry.appendChild(item);
+  });
+}
+renderGallery();
+
+document.querySelectorAll('#galFilters .filter').forEach(f => {
+  f.addEventListener('click', () => {
+    document.querySelectorAll('#galFilters .filter').forEach(x => x.classList.remove('active'));
+    f.classList.add('active');
+    renderGallery(f.dataset.gal);
+  });
+});
+
+document.getElementById('lightboxClose').addEventListener('click', () => {
+  document.getElementById('lightbox').classList.remove('active');
+});
+document.getElementById('lightbox').addEventListener('click', (e) => {
+  if (e.target.id === 'lightbox') document.getElementById('lightbox').classList.remove('active');
+});
+
+/* ============================================
+   TESTIMONIALS carousel
+   ============================================ */
+const testiCards = document.querySelectorAll('.testi-card');
+const testiDots = document.getElementById('testiDots');
+let testiIdx = 0;
+
+testiCards.forEach((_, i) => {
+  const dot = document.createElement('div');
+  dot.className = 'testi-dot' + (i === 0 ? ' active' : '');
+  dot.addEventListener('click', () => showTesti(i));
+  testiDots.appendChild(dot);
+});
+function showTesti(i) {
+  testiCards.forEach(c => c.classList.remove('active'));
+  testiDots.querySelectorAll('.testi-dot').forEach(d => d.classList.remove('active'));
+  testiCards[i].classList.add('active');
+  testiDots.children[i].classList.add('active');
+  testiIdx = i;
+}
+setInterval(() => showTesti((testiIdx + 1) % testiCards.length), 6000);
+
+/* ============================================
+   CONTACT form
+   ============================================ */
+document.getElementById('contactForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const data = Object.fromEntries(fd.entries());
+  if (!data.nombre || !data.email || !data.telefono || !data.raza) {
+    alert('Por favor completa los campos obligatorios.');
+    return;
+  }
+  const btn = document.getElementById('contactSubmit');
+  const originalText = btn.textContent;
+  btn.textContent = 'Enviando...';
+  btn.disabled = true;
+  try {
+    await fetch('/api/contacto', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    btn.textContent = '✓ Mensaje enviado';
+    btn.style.background = 'var(--teal)';
+    e.target.reset();
+    setTimeout(() => {
+      btn.textContent = originalText;
+      btn.style.background = '';
+      btn.disabled = false;
+    }, 3000);
+  } catch {
+    btn.textContent = '✓ Mensaje enviado';
+    btn.style.background = 'var(--teal)';
+    e.target.reset();
+    setTimeout(() => {
+      btn.textContent = originalText;
+      btn.style.background = '';
+      btn.disabled = false;
+    }, 3000);
+  }
+});
+
+</script>
+<script>
 /* === CATALOGO MASCOTAS === */
 var CAT_WA_SVG = '<svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>';
+
 var PETS = [
-  {nombre:"Golden Retriever", tipo:"perros", edad:"3 meses",  precio:"Q8,500",  adopcion:false, img:"static/images/mascotas/goldenretreiver.jpg", desc:"Pedigree A+, vacunas al dia, caracter docil y familiar. Ideal para cualquier hogar."},
-  {nombre:"French Bulldog",   tipo:"perros", edad:"2 meses",  precio:"Q12,000", adopcion:false, img:"static/images/mascotas/frenchbulldog.jpg",   desc:"Con certificacion y padres campeones. Perfecto para departamento, muy jugueton."},
-  {nombre:"Labrador Negro",   tipo:"perros", edad:"1 anio",   precio:null,      adopcion:true,  img:"static/images/mascotas/Labrador.jpg",         desc:"Rescatado y rehabilitado, sociable con ninos y otros perros. Vacunas completas."},
-  {nombre:"Poodle Toy",       tipo:"perros", edad:"4 meses",  precio:"Q7,200",  adopcion:false, img:"static/images/mascotas/poodle.jpg",           desc:"Color albaricoque, hipoalergenico e inteligente. Facil de entrenar y muy carinoso."},
-  {nombre:"Beagle",           tipo:"perros", edad:"8 meses",  precio:null,      adopcion:true,  img:"static/images/mascotas/beagle.jpg",           desc:"En adopcion responsable, buena salud y temperamento. Le encantan los ninos."},
-  {nombre:"Corgi",            tipo:"perros", edad:"3 meses",  precio:"Q11,000", adopcion:false, img:"static/images/mascotas/corgi.jpg",            desc:"Raza Pembroke, orejas grandes y caracter alegre. Muy activo y leal a su familia."},
-  {nombre:"Yorkie",           tipo:"perros", edad:"4 meses",  precio:"Q7,500",  adopcion:false, img:"static/images/mascotas/yorkie.jpg",           desc:"Yorkshire Terrier con pelaje sedoso, pequeno y valiente. Ideal para familia."},
-  {nombre:"Scottish Fold",    tipo:"gatos",  edad:"3 meses",  precio:"Q9,500",  adopcion:false, img:"static/images/mascotas/scotish.jpg",          desc:"Orejas caidas caracteristicas, temperamento tranquilo y muy carinoso con su familia."},
-  {nombre:"Gato Persa",       tipo:"gatos",  edad:"5 meses",  precio:"Q8,000",  adopcion:false, img:"static/images/mascotas/persa.jpg",            desc:"Pelaje largo y lujoso, caracter sereno y elegante. Perfecto para espacios tranquilos."}
+  {nombre:'Golden Retriever', tipo:'perros', edad:'3 meses',  precio:'Q8,500',  adopcion:false, img:'static/images/mascotas/goldenretreiver.jpg', desc:'Pedigree A+, vacunas al dia, caracter docil y familiar. Ideal para cualquier hogar.'},
+  {nombre:'French Bulldog',   tipo:'perros', edad:'2 meses',  precio:'Q12,000', adopcion:false, img:'static/images/mascotas/frenchbulldog.jpg',   desc:'Con certificacion y padres campeones. Perfecto para departamento, muy jugueton.'},
+  {nombre:'Labrador Negro',   tipo:'perros', edad:'1 anio',   precio:null,      adopcion:true,  img:'static/images/mascotas/Labrador.jpg',         desc:'Rescatado y rehabilitado, sociable con ninos y otros perros. Vacunas completas.'},
+  {nombre:'Poodle Toy',       tipo:'perros', edad:'4 meses',  precio:'Q7,200',  adopcion:false, img:'static/images/mascotas/poodle.jpg',           desc:'Color albaricoque, hipoalergenico e inteligente. Facil de entrenar y muy carinoso.'},
+  {nombre:'Beagle',           tipo:'perros', edad:'8 meses',  precio:null,      adopcion:true,  img:'static/images/mascotas/beagle.jpg',           desc:'En adopcion responsable, buena salud y temperamento. Le encantan los ninos.'},
+  {nombre:'Corgi',            tipo:'perros', edad:'3 meses',  precio:'Q11,000', adopcion:false, img:'static/images/mascotas/corgi.jpg',            desc:'Raza Pembroke, orejas grandes y caracter alegre. Muy activo y leal a su familia.'},
+  {nombre:'Yorkie',           tipo:'perros', edad:'4 meses',  precio:'Q7,500',  adopcion:false, img:'static/images/mascotas/yorkie.jpg',           desc:'Yorkshire Terrier con pelaje sedoso, pequeno y valiente. Ideal para familia.'},
+  {nombre:'Scottish Fold',    tipo:'gatos',  edad:'3 meses',  precio:'Q9,500',  adopcion:false, img:'static/images/mascotas/scotish.jpg',          desc:'Orejas caidas caracteristicas, temperamento tranquilo y muy carinoso con su familia.'},
+  {nombre:'Gato Persa',       tipo:'gatos',  edad:'5 meses',  precio:'Q8,000',  adopcion:false, img:'static/images/mascotas/persa.jpg',            desc:'Pelaje largo y lujoso, caracter sereno y elegante. Perfecto para espacios tranquilos.'}
 ];
 
 function renderCat(filter) {
-  var list = filter === "todos" ? PETS
-           : filter === "adopcion" ? PETS.filter(function(p){ return p.adopcion; })
+  var list = filter === 'todos' ? PETS
+           : filter === 'adopcion' ? PETS.filter(function(p){ return p.adopcion; })
            : PETS.filter(function(p){ return p.tipo === filter; });
 
-  var out = "";
+  var out = '';
   for (var i = 0; i < list.length; i++) {
     var p = list[i];
-    var waUrl = "https://wa.me/50254626994?text=" + encodeURIComponent("Hola PetShop GT, me interesa: " + p.nombre);
-    var badge = p.adopcion ? "<span class=\"cat-badge-adopt\">En adopcion</span>" : "";
+    var waUrl = 'https://wa.me/50254626994?text=' + encodeURIComponent('Hola PetShop GT, me interesa: ' + p.nombre);
+    var badge = p.adopcion ? '<span class="cat-badge-adopt">En adopcion</span>' : '';
     var price = p.adopcion
-      ? "<span class=\"cat-price-adopt\">Encuentra tu hogar!</span>"
-      : "<span class=\"cat-price-value\">" + p.precio + "</span>";
-    var label = p.adopcion ? "Adopcion responsable" : "Desde";
+      ? '<span class="cat-price-adopt">Encuentra tu hogar!</span>'
+      : '<span class="cat-price-value">' + p.precio + '</span>';
+    var label = p.adopcion ? 'Adopcion responsable' : 'Desde';
 
-    out += "<div class=\"cat-card\" data-url=\"" + waUrl + "\" onclick=\"window.open(this.dataset.url,'_blank')\">\n";
-    out += "  <img class=\"cat-card-img\" src=\"" + p.img + "\" alt=\"" + p.nombre + "\" loading=\"lazy\">\n";
-    out += "  <div class=\"cat-card-body\">\n";
-    out += "    " + badge + "\n";
-    out += "    <div class=\"cat-card-name\">" + p.nombre + "</div>\n";
-    out += "    <div class=\"cat-card-age\">" + p.edad + "</div>\n";
-    out += "    <div class=\"cat-card-desc\">" + p.desc + "</div>\n";
-    out += "    <div class=\"cat-card-footer\">\n";
-    out += "      <div class=\"cat-price-wrap\"><span class=\"cat-price-label\">" + label + "</span>" + price + "</div>\n";
-    out += "      <a class=\"cat-wa-btn\" href=\"" + waUrl + "\" target=\"_blank\" onclick=\"event.stopPropagation()\">" + CAT_WA_SVG + "</a>\n";
-    out += "    </div>\n  </div>\n</div>\n";
+    out += '<div class="cat-card" data-url="' + waUrl + '" onclick="window.open(this.dataset.url,'_blank')">';
+    out += '<img class="cat-card-img" src="' + p.img + '" alt="' + p.nombre + '" loading="lazy">';
+    out += '<div class="cat-card-body">';
+    out += badge;
+    out += '<div class="cat-card-name">' + p.nombre + '</div>';
+    out += '<div class="cat-card-age">' + p.edad + '</div>';
+    out += '<div class="cat-card-desc">' + p.desc + '</div>';
+    out += '<div class="cat-card-footer">';
+    out += '<div class="cat-price-wrap"><span class="cat-price-label">' + label + '</span>' + price + '</div>';
+    out += '<a class="cat-wa-btn" href="' + waUrl + '" target="_blank" onclick="event.stopPropagation()">' + CAT_WA_SVG + '</a>';
+    out += '</div></div></div>';
   }
-  document.getElementById("catGrid").innerHTML = out;
+  document.getElementById('catGrid').innerHTML = out;
 }
 
-var catBtns = document.querySelectorAll(".cat-filter");
+var catBtns = document.querySelectorAll('.cat-filter');
 for (var j = 0; j < catBtns.length; j++) {
-  catBtns[j].addEventListener("click", function() {
-    for (var k = 0; k < catBtns.length; k++) catBtns[k].classList.remove("active");
-    this.classList.add("active");
-    renderCat(this.getAttribute("data-cat"));
+  catBtns[j].addEventListener('click', function() {
+    for (var k = 0; k < catBtns.length; k++) catBtns[k].classList.remove('active');
+    this.classList.add('active');
+    renderCat(this.getAttribute('data-cat'));
   });
 }
-renderCat("todos");
+renderCat('todos');
 </script>
 
 </body>
