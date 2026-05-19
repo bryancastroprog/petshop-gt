@@ -2731,6 +2731,8 @@ var PETS = [
   {nombre:'Gato Persa',       tipo:'gatos',  edad:'5 meses',  precio:'Q8,000',  adopcion:false, img:'static/images/mascotas/persa.jpg',            desc:'Pelaje largo y lujoso, caracter sereno y elegante. Perfecto para espacios tranquilos.'}
 ];
 
+function catOpen(el) { window.open(el.dataset.url, '_blank'); }
+
 function renderCat(filter) {
   var list = filter === 'todos' ? PETS
            : filter === 'adopcion' ? PETS.filter(function(p){ return p.adopcion; })
@@ -2746,7 +2748,7 @@ function renderCat(filter) {
       : '<span class="cat-price-value">' + p.precio + '</span>';
     var label = p.adopcion ? 'Adopcion responsable' : 'Desde';
 
-    out += '<div class="cat-card" data-url="' + waUrl + '" onclick="window.open(this.dataset.url,'_blank')">';
+    out += '<div class="cat-card" data-url="' + waUrl + '" onclick="catOpen(this)">';
     out += '<img class="cat-card-img" src="' + p.img + '" alt="' + p.nombre + '" loading="lazy">';
     out += '<div class="cat-card-body">';
     out += badge;
