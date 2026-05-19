@@ -1670,6 +1670,26 @@ label {
 .service-option:nth-child(1).selected { border-color: var(--teal); background: var(--teal-soft); }
 .service-option:nth-child(2).selected { border-color: var(--coral); background: var(--coral-soft); }
 .service-option:nth-child(3).selected { border-color: var(--amber); background: var(--amber-soft); }
+
+/* === CATALOGO MASCOTAS === */
+.cat-filter{padding:8px 20px;border-radius:999px;border:2px solid #00a99d;background:transparent;color:#00a99d;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s;}
+.cat-filter.active,.cat-filter:hover{background:#00a99d;color:white;}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:24px;}
+.cat-card{background:white;border-radius:20px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.07);transition:transform .25s,box-shadow .25s;cursor:pointer;}
+.cat-card:hover{transform:translateY(-6px);box-shadow:0 12px 32px rgba(0,0,0,.13);}
+.cat-card-img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;}
+.cat-card-body{padding:18px 20px 20px;}
+.cat-card-name{font-family:'Montserrat',sans-serif;font-size:1.1rem;font-weight:700;color:#0d2137;margin-bottom:2px;}
+.cat-card-age{font-size:.8rem;color:#8fa5b3;margin-bottom:10px;}
+.cat-card-desc{font-size:.85rem;color:#5a7080;line-height:1.55;margin-bottom:14px;}
+.cat-card-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.cat-price-wrap{display:flex;flex-direction:column;}
+.cat-price-label{font-size:.72rem;color:#8fa5b3;letter-spacing:.05em;text-transform:uppercase;}
+.cat-price-value{font-size:1.05rem;font-weight:700;color:#00a99d;}
+.cat-price-adopt{font-size:.85rem;font-weight:600;color:#f5a623;}
+.cat-wa-btn{width:38px;height:38px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:transform .2s;flex-shrink:0;}
+.cat-wa-btn:hover{transform:scale(1.12);}
+.cat-badge-adopt{display:inline-block;padding:3px 10px;border-radius:999px;background:#fff4e6;color:#b35a00;font-size:.72rem;font-weight:600;margin-bottom:8px;}
 </style>
 </head>
 <body>
@@ -1776,73 +1796,6 @@ label {
     <div class="cat-grid fade-in" id="catGrid"></div>
   </div>
 </section>
-
-<style>
-.cat-filter{padding:8px 20px;border-radius:999px;border:2px solid #00a99d;background:transparent;color:#00a99d;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s;}
-.cat-filter.active,.cat-filter:hover{background:#00a99d;color:white;}
-.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:24px;}
-.cat-card{background:white;border-radius:20px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.07);transition:transform .25s,box-shadow .25s;cursor:pointer;}
-.cat-card:hover{transform:translateY(-6px);box-shadow:0 12px 32px rgba(0,0,0,.13);}
-.cat-card-img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;}
-.cat-card-body{padding:18px 20px 20px;}
-.cat-card-name{font-family:'Montserrat',sans-serif;font-size:1.1rem;font-weight:700;color:#0d2137;margin-bottom:2px;}
-.cat-card-age{font-size:.8rem;color:#8fa5b3;margin-bottom:10px;}
-.cat-card-desc{font-size:.85rem;color:#5a7080;line-height:1.55;margin-bottom:14px;}
-.cat-card-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;}
-.cat-price-wrap{display:flex;flex-direction:column;}
-.cat-price-label{font-size:.72rem;color:#8fa5b3;letter-spacing:.05em;text-transform:uppercase;}
-.cat-price-value{font-size:1.1rem;font-weight:700;color:#00a99d;}
-.cat-price-adopt{font-size:.85rem;font-weight:600;color:#f5a623;}
-.cat-wa-btn{width:38px;height:38px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:transform .2s;flex-shrink:0;}
-.cat-wa-btn:hover{transform:scale(1.12);}
-.cat-badge-adopt{display:inline-block;padding:3px 10px;border-radius:999px;background:#fff4e6;color:#b35a00;font-size:.72rem;font-weight:600;margin-bottom:8px;}
-</style>
-
-<script>
-const PETS=[
-  {nombre:"Golden Retriever",tipo:"perros",edad:"3 meses", precio:"Q8,500", adopcion:false,img:"static/images/mascotas/goldenretreiver.jpg",desc:"Pedigree A+, vacunas al día, carácter dócil y familiar. Ideal para cualquier hogar."},
-  {nombre:"French Bulldog",  tipo:"perros",edad:"2 meses", precio:"Q12,000",adopcion:false,img:"static/images/mascotas/frenchbulldog.jpg",  desc:"Con certificación y padres campeones. Perfecto para departamento, muy juguetón."},
-  {nombre:"Labrador Negro",  tipo:"perros",edad:"1 año",   precio:null,     adopcion:true, img:"static/images/mascotas/Labrador.jpg",        desc:"Rescatado y rehabilitado, sociable con niños y otros perros. Vacunas completas."},
-  {nombre:"Poodle Toy",      tipo:"perros",edad:"4 meses", precio:"Q7,200", adopcion:false,img:"static/images/mascotas/poodle.jpg",          desc:"Color albaricoque, hipoalérgénico e inteligente. Fácil de entrenar y muy cariñoso."},
-  {nombre:"Beagle",          tipo:"perros",edad:"8 meses", precio:null,     adopcion:true, img:"static/images/mascotas/beagle.jpg",          desc:"En adopción responsable, buena salud y temperamento. Le encantan los niños."},
-  {nombre:"Corgi",           tipo:"perros",edad:"3 meses", precio:"Q11,000",adopcion:false,img:"static/images/mascotas/corgi.jpg",           desc:"Raza Pembroke, orejas grandes y carácter alegre. Muy activo y leal a su familia."},
-  {nombre:"Yorkie",          tipo:"perros",edad:"4 meses", precio:"Q7,500", adopcion:false,img:"static/images/mascotas/yorkie.jpg",          desc:"Yorkshire Terrier con pelaje sedoso, pequeño y valiente. Ideal para familia."},
-  {nombre:"Scottish Fold",   tipo:"gatos", edad:"3 meses", precio:"Q9,500", adopcion:false,img:"static/images/mascotas/scotish.jpg",         desc:"Orejas caídas características, temperamento tranquilo y muy cariñoso con su familia."},
-  {nombre:"Gato Persa",      tipo:"gatos", edad:"5 meses", precio:"Q8,000", adopcion:false,img:"static/images/mascotas/persa.jpg",           desc:"Pelaje largo y lujoso, carácter sereno y elegante. Perfecto para espacios tranquilos."},
-];
-function renderCat(f){
-  const list=f==="todos"?PETS:f==="adopcion"?PETS.filter(p=>p.adopcion):PETS.filter(p=>p.tipo===f);
-  document.getElementById("catGrid").innerHTML=list.map(p=>`
-    <div class="cat-card" onclick="window.open('https://wa.me/50254626994?text='+encodeURIComponent('Hola PetShop GT, me interesa: '+p.nombre),'_blank')">
-      <img class="cat-card-img" src="${p.img}" alt="${p.nombre}" loading="lazy">
-      <div class="cat-card-body">
-        ${p.adopcion?'<span class="cat-badge-adopt">🤍 En adopción</span>':''}
-        <div class="cat-card-name">${p.nombre}</div>
-        <div class="cat-card-age">🐾 ${p.edad}</div>
-        <div class="cat-card-desc">${p.desc}</div>
-        <div class="cat-card-footer">
-          <div class="cat-price-wrap">
-            <span class="cat-price-label">${p.adopcion?'Adopción responsable':'Desde'}</span>
-            ${p.adopcion?'<span class="cat-price-adopt">¡Encuentra tu hogar! 🧡</span>':'<span class="cat-price-value">'+p.precio+'</span>'}
-          </div>
-          <a class="cat-wa-btn" href="https://wa.me/50254626994?text=${encodeURIComponent('Hola PetShop GT, me interesa: ')}${encodeURIComponent(p.nombre)}" target="_blank" onclick="event.stopPropagation()">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
-          </a>
-        </div>
-      </div>
-    </div>
-  `).join("");
-}
-document.querySelectorAll(".cat-filter").forEach(b=>{
-  b.addEventListener("click",()=>{
-    document.querySelectorAll(".cat-filter").forEach(x=>x.classList.remove("active"));
-    b.classList.add("active");
-    renderCat(b.dataset.cat);
-  });
-});
-renderCat("todos");
-</script>
-
 
 <!-- ============================================ SERVICIOS ============================================ -->
 <section class="section" id="servicios">
@@ -2229,8 +2182,7 @@ renderCat("todos");
         <h4>Navegación</h4>
         <ul>
           <li><a href="#catalogo">Mascotas</a></li>
-          <li><a href="#mascotas">Mascotas</a></li>
-      <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#servicios">Servicios</a></li>
           <li><a href="#agenda">Agenda Cita</a></li>
           <li><a href="#nosotros">Nosotros</a></li>
           <li><a href="#contacto">Contacto</a></li>
@@ -3131,7 +3083,6 @@ label {
       </div>
     </a>
     <ul class="nav-links" id="navLinks">
-      <li><a href="#mascotas">Mascotas</a></li>
       <li><a href="#servicios">Servicios</a></li>
       <li><a href="#agenda">Agenda tu Cita</a></li>
       <li><a href="#nosotros">Nosotros</a></li>
@@ -3590,8 +3541,7 @@ label {
         <h4>Navegación</h4>
         <ul>
           <li><a href="#catalogo">Mascotas</a></li>
-          <li><a href="#mascotas">Mascotas</a></li>
-      <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#servicios">Servicios</a></li>
           <li><a href="#agenda">Agenda Cita</a></li>
           <li><a href="#nosotros">Nosotros</a></li>
           <li><a href="#contacto">Contacto</a></li>
@@ -3630,8 +3580,232 @@ label {
 </div>
 
 <!-- ============================================ JAVASCRIPT ============================================ -->
-
 <script>
+/* ============================================
+   DEMO DATA
+   ============================================ */
+const DEMO_MASCOTAS = [
+  { id: 1, nombre: "Golden Retriever", estado: "venta", precio: "Q8,500", edad: "3 meses", descripcion: "Cachorro Golden Retriever pedigree A+, vacunas al día, desparasitado. Carácter dócil y familiar.", fotos: [], color: "#F59E0B" },
+  { id: 2, nombre: "French Bulldog", estado: "venta", precio: "Q12,000", edad: "2 meses", descripcion: "Bulldog Francés con certificación, padres campeones. Ideal para apartamento.", fotos: [], color: "#8B5CF6" },
+  { id: 3, nombre: "Labrador Negro", estado: "adopcion", precio: null, edad: "1 año", descripcion: "Labrador negro rescatado, sociable con niños y otros perros. Vacunas completas.", fotos: [], color: "#1C2D52" },
+  { id: 4, nombre: "Shih Tzu", estado: "venta", precio: "Q6,500", edad: "3 meses", descripcion: "Shih Tzu con pedigree, pelaje hermoso. Muy cariñoso y adaptable.", fotos: [], color: "#EC4899" },
+  { id: 5, nombre: "Poodle Toy", estado: "venta", precio: "Q7,200", edad: "4 meses", descripcion: "Poodle Toy color albaricoque, hipoalergénico. Inteligente y fácil de entrenar.", fotos: [], color: "#F97316" },
+  { id: 6, nombre: "Beagle", estado: "adopcion", precio: null, edad: "8 meses", descripcion: "Beagle juguetón en adopción responsable. Buena salud, le encantan los niños.", fotos: [], color: "#22BFC0" },
+];
+
+const PET_EMOJIS = ["🐕", "🐶", "🦮", "🐩", "🐾"];
+
+/* ============================================
+   NAVBAR scroll + hamburger
+   ============================================ */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 60) navbar.classList.add('scrolled');
+  else navbar.classList.remove('scrolled');
+});
+
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('active');
+  navLinks.classList.toggle('open');
+});
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  hamburger.classList.remove('active');
+  navLinks.classList.remove('open');
+}));
+
+/* ============================================
+   FLOATING PAWS in hero
+   ============================================ */
+(function generatePaws() {
+  const bg = document.getElementById('pawsBg');
+  for (let i = 0; i < 24; i++) {
+    const p = document.createElement('span');
+    p.className = 'paw';
+    p.textContent = '🐾';
+    p.style.left = (Math.random() * 100) + '%';
+    p.style.animationDelay = (Math.random() * 18) + 's';
+    p.style.animationDuration = (12 + Math.random() * 14) + 's';
+    p.style.fontSize = (1.5 + Math.random() * 2.5) + 'rem';
+    bg.appendChild(p);
+  }
+})();
+
+/* ============================================
+   STATS counter animation
+   ============================================ */
+const statNums = document.querySelectorAll('.stat-num[data-target]');
+const countObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const el = e.target;
+      const target = +el.dataset.target;
+      const suffix = el.dataset.suffix || '';
+      let cur = 0;
+      const step = Math.max(1, target / 50);
+      const tick = () => {
+        cur += step;
+        if (cur >= target) { el.textContent = target + suffix; return; }
+        el.textContent = Math.floor(cur) + suffix;
+        requestAnimationFrame(tick);
+      };
+      tick();
+      countObs.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+statNums.forEach(s => countObs.observe(s));
+
+/* ============================================
+   FADE-IN on scroll
+   ============================================ */
+const fadeEls = document.querySelectorAll('.fade-in');
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+fadeEls.forEach(e => fadeObs.observe(e));
+
+/* ============================================
+   CATALOGO render & filters
+   ============================================ */
+let MASCOTAS = [];
+const petsGrid = document.getElementById('petsGrid');
+
+function renderPets(filter = 'all', breed = null) {
+  petsGrid.innerHTML = '';
+  let list = MASCOTAS.slice();
+  if (filter !== 'all') list = list.filter(p => p.estado === filter);
+  if (breed) list = list.filter(p => p.nombre.toLowerCase().includes(breed.toLowerCase()));
+  if (!list.length) {
+    petsGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--gray-500);">No hay mascotas que coincidan con este filtro.</div>';
+    return;
+  }
+  list.forEach((p, i) => {
+    const emoji = PET_EMOJIS[i % PET_EMOJIS.length];
+    const card = document.createElement('div');
+    card.className = 'pet-card';
+    card.innerHTML = `
+      <div class="pet-img" style="background: linear-gradient(135deg, ${p.color}, ${p.color}99);">
+        <span class="pet-badge ${p.estado}">${p.estado === 'venta' ? 'En Venta' : 'En Adopción'}</span>
+        ${emoji}
+      </div>
+      <div class="pet-body">
+        <h3 class="pet-name">${p.nombre}</h3>
+        <div class="pet-age">ðŸ“… ${p.edad}</div>
+        <p class="pet-desc">${p.descripcion}</p>
+        <div class="pet-foot">
+          <div class="pet-price ${p.estado === 'adopcion' ? 'adopt' : ''}">${p.precio || 'Adopción'}</div>
+          <div class="pet-actions">
+            <button class="pet-btn" title="Ver más" data-action="view">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </button>
+            <button class="pet-btn" title="Agendar visita" data-action="book">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+    card.addEventListener('click', (ev) => {
+      const action = ev.target.closest('[data-action]')?.dataset.action;
+      if (action === 'book') {
+        document.getElementById('agenda').scrollIntoView({ behavior: 'smooth' });
+      } else {
+        openModal(p, emoji);
+      }
+    });
+    petsGrid.appendChild(card);
+  });
+}
+
+// Filters
+document.querySelectorAll('#filters .filter').forEach(f => {
+  f.addEventListener('click', () => {
+    document.querySelectorAll('#filters .filter').forEach(x => x.classList.remove('active'));
+    f.classList.add('active');
+    const filter = f.dataset.filter;
+    const breed = f.dataset.breed;
+    if (breed) renderPets('all', breed);
+    else renderPets(filter || 'all');
+  });
+});
+
+// Modal
+const modal = document.getElementById('modal');
+const modalClose = document.getElementById('modalClose');
+
+function openModal(p, emoji) {
+  document.getElementById('modalHero').style.background = `linear-gradient(135deg, ${p.color}, ${p.color}99)`;
+  document.getElementById('modalHero').textContent = emoji;
+  const badge = document.getElementById('modalBadge');
+  badge.className = `pet-badge ${p.estado}`;
+  badge.style.position = 'static';
+  badge.style.display = 'inline-block';
+  badge.style.marginBottom = '0.75rem';
+  badge.textContent = p.estado === 'venta' ? 'En Venta' : 'En Adopción';
+  document.getElementById('modalTitle').textContent = p.nombre;
+  document.getElementById('metaAge').textContent = p.edad;
+  document.getElementById('metaState').textContent = p.estado === 'venta' ? 'Disponible' : 'Adopción';
+  document.getElementById('metaPrice').textContent = p.precio || 'Adopción responsable';
+  document.getElementById('modalDesc').textContent = p.descripcion;
+  // thumbs
+  const thumbs = document.getElementById('modalThumbs');
+  thumbs.innerHTML = '';
+  for (let i = 0; i < 4; i++) {
+    const t = document.createElement('div');
+    t.className = 'modal-thumb';
+    t.style.background = `linear-gradient(${135 + i*30}deg, ${p.color}, ${p.color}66)`;
+    t.textContent = PET_EMOJIS[i % PET_EMOJIS.length];
+    thumbs.appendChild(t);
+  }
+  // WhatsApp link
+  const msg = encodeURIComponent(`Hola PetShop GT, me interesa ${p.nombre} (${p.edad}). ¿Podemos coordinar una visita?`);
+  document.getElementById('modalWa').href = `https://wa.me/50254626994?text=${msg}`;
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+modalClose.addEventListener('click', closeModal);
+modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+function closeModal() { modal.classList.remove('active'); document.body.style.overflow = ''; }
+
+// Load
+async function loadMascotas() {
+  try {
+    const r = await fetch('/api/mascotas');
+    if (!r.ok) throw new Error('fallback');
+    MASCOTAS = await r.json();
+    if (!Array.isArray(MASCOTAS) || !MASCOTAS.length) throw new Error('empty');
+  } catch {
+    MASCOTAS = DEMO_MASCOTAS;
+  }
+  renderPets();
+  populateRazas();
+}
+function populateRazas() {
+  const sel1 = document.getElementById('razaSelect');
+  const sel2 = document.getElementById('contactRaza');
+  [sel1, sel2].forEach(sel => {
+    if (!sel) return;
+    sel.innerHTML = '<option value="">Selecciona una raza...</option>';
+    MASCOTAS.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.nombre;
+      opt.textContent = p.nombre;
+      sel.appendChild(opt);
+    });
+    const o = document.createElement('option');
+    o.value = 'otro';
+    o.textContent = 'Otro';
+    sel.appendChild(o);
+  });
+}
+loadMascotas();
 
 /* ============================================
    AGENDA — 3-step booking
@@ -3897,6 +4071,62 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
 });
 
 </script>
+
+<script>
+/* === CATALOGO MASCOTAS === */
+var PETS = [
+  {nombre:"Golden Retriever", tipo:"perros", edad:"3 meses",  precio:"Q8,500",  adopcion:false, img:"static/images/mascotas/goldenretreiver.jpg", desc:"Pedigree A+, vacunas al dia, caracter docil y familiar. Ideal para cualquier hogar."},
+  {nombre:"French Bulldog",   tipo:"perros", edad:"2 meses",  precio:"Q12,000", adopcion:false, img:"static/images/mascotas/frenchbulldog.jpg",   desc:"Con certificacion y padres campeones. Perfecto para departamento, muy jugueton."},
+  {nombre:"Labrador Negro",   tipo:"perros", edad:"1 anio",   precio:null,       adopcion:true,  img:"static/images/mascotas/Labrador.jpg",         desc:"Rescatado y rehabilitado, sociable con ninos y otros perros. Vacunas completas."},
+  {nombre:"Poodle Toy",       tipo:"perros", edad:"4 meses",  precio:"Q7,200",  adopcion:false, img:"static/images/mascotas/poodle.jpg",           desc:"Color albaricoque, hipoalergenico e inteligente. Facil de entrenar y muy carinoso."},
+  {nombre:"Beagle",           tipo:"perros", edad:"8 meses",  precio:null,       adopcion:true,  img:"static/images/mascotas/beagle.jpg",           desc:"En adopcion responsable, buena salud y temperamento. Le encantan los ninos."},
+  {nombre:"Corgi",            tipo:"perros", edad:"3 meses",  precio:"Q11,000", adopcion:false, img:"static/images/mascotas/corgi.jpg",            desc:"Raza Pembroke, orejas grandes y caracter alegre. Muy activo y leal a su familia."},
+  {nombre:"Yorkie",           tipo:"perros", edad:"4 meses",  precio:"Q7,500",  adopcion:false, img:"static/images/mascotas/yorkie.jpg",           desc:"Yorkshire Terrier con pelaje sedoso, pequeno y valiente. Ideal para familia."},
+  {nombre:"Scottish Fold",    tipo:"gatos",  edad:"3 meses",  precio:"Q9,500",  adopcion:false, img:"static/images/mascotas/scotish.jpg",          desc:"Orejas caidas caracteristicas, temperamento tranquilo y muy carinoso con su familia."},
+  {nombre:"Gato Persa",       tipo:"gatos",  edad:"5 meses",  precio:"Q8,000",  adopcion:false, img:"static/images/mascotas/persa.jpg",            desc:"Pelaje largo y lujoso, caracter sereno y elegante. Perfecto para espacios tranquilos."}
+];
+
+function renderCat(filter) {
+  var list = filter === 'todos' ? PETS
+           : filter === 'adopcion' ? PETS.filter(function(p){ return p.adopcion; })
+           : PETS.filter(function(p){ return p.tipo === filter; });
+
+  var html = '';
+  for (var i = 0; i < list.length; i++) {
+    var p = list[i];
+    var waMsg = encodeURIComponent('Hola PetShop GT, me interesa: ' + p.nombre);
+    var badge = p.adopcion ? '<span class="cat-badge-adopt">En adopcion</span>' : '';
+    var price = p.adopcion
+      ? '<span class="cat-price-adopt">Encuentra tu hogar!</span>'
+      : '<span class="cat-price-value">' + p.precio + '</span>';
+    var label = p.adopcion ? 'Adopcion responsable' : 'Desde';
+
+    html += '<div class="cat-card" onclick="window.open('https://wa.me/50254626994?text=' + waMsg + '','_blank')">';
+    html += '<img class="cat-card-img" src="' + p.img + '" alt="' + p.nombre + '" loading="lazy">';
+    html += '<div class="cat-card-body">';
+    html += badge;
+    html += '<div class="cat-card-name">' + p.nombre + '</div>';
+    html += '<div class="cat-card-age">' + p.edad + '</div>';
+    html += '<div class="cat-card-desc">' + p.desc + '</div>';
+    html += '<div class="cat-card-footer">';
+    html += '<div class="cat-price-wrap"><span class="cat-price-label">' + label + '</span>' + price + '</div>';
+    html += '<a class="cat-wa-btn" href="https://wa.me/50254626994?text=' + waMsg + '" target="_blank" onclick="event.stopPropagation()">' + '<svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>' + '</a>';
+    html += '</div></div></div>';
+  }
+  document.getElementById('catGrid').innerHTML = html;
+}
+
+var catBtns = document.querySelectorAll('.cat-filter');
+for (var j = 0; j < catBtns.length; j++) {
+  catBtns[j].addEventListener('click', function() {
+    for (var k = 0; k < catBtns.length; k++) catBtns[k].classList.remove('active');
+    this.classList.add('active');
+    renderCat(this.getAttribute('data-cat'));
+  });
+}
+renderCat('todos');
+</script>
+
 </body>
 </html>
 
