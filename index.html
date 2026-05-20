@@ -1962,7 +1962,7 @@ label {
         </div>
         <div class="step-nav">
           <span></span>
-          <button class="btn btn-primary" id="next1" disabled>Continuar →</button>
+          <button class="btn btn-primary" id="next1">Continuar →</button>
         </div>
       </div>
 
@@ -2592,7 +2592,10 @@ function selectServicio(el) {
 document.querySelectorAll('.service-option').forEach(o => {
   o.addEventListener('click', () => selectServicio(o));
 });
-document.getElementById('next1').addEventListener('click', () => { buildCalendar(); setStep(2); });
+document.getElementById('next1').addEventListener('click', () => {
+  if (!booking.servicio) { alert('Por favor selecciona un servicio.'); return; }
+  buildCalendar(); setStep(2);
+});
 
 // Pre-select service from service cards
 document.querySelectorAll('.service-btn[data-service]').forEach(b => {
@@ -2907,8 +2910,6 @@ for (var j = 0; j < catBtns.length; j++) {
 renderCat('todos');
 </script>
 
-<!-- Koko Chatbot Widget -->
-<script src="http://localhost:8000/static/widget.js" data-backend="http://localhost:8000"></script>
 
 </body>
 </html>
