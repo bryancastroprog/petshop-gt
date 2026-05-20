@@ -954,28 +954,18 @@ label {
 .booking-success-details .lbl { color: var(--gray-500); font-size: 0.85rem; }
 .booking-success-details .val { font-weight: 600; font-size: 0.9rem; }
 
-.slots-area {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+.booking-divider {
+  border: none;
+  border-top: 1px solid var(--gray-100);
+  margin: 2rem 0;
 }
-.slot-btn {
-  padding: 0.65rem 0.5rem;
-  border: 1.5px solid var(--teal-light);
-  border-radius: var(--radius-sm);
-  text-align: center;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  background: var(--teal-soft);
-  font-family: inherit;
-  color: var(--navy);
+.btn-agenda-cal {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 2.5rem;
+  font-size: 1.05rem;
 }
-.slot-btn:hover { border-color: var(--teal); color: var(--teal-dark); background: var(--teal-light); }
-.slot-btn.selected { background: var(--teal); border-color: var(--teal); color: var(--white); box-shadow: 0 4px 12px rgba(34,191,192,0.3); }
-.slots-msg { color: var(--gray-500); font-size: 0.9rem; padding: 0.5rem 0; }
 
 /* ============================================
    GALERIA
@@ -1821,82 +1811,42 @@ label {
     <div class="section-head fade-in">
       <span class="eyebrow">Agenda tu Cita</span>
       <h2>Reserva tu visita</h2>
-      <p class="lead">Completa el formulario y te confirmamos por WhatsApp en menos de 24 horas.</p>
+      <p class="lead">Elige el servicio, selecciona el día y hora disponible en nuestro calendario — recibes confirmación automática.</p>
     </div>
 
     <div class="booking-card fade-in">
+      <h3 style="font-family:'Nunito',sans-serif;font-size:1.4rem;margin-bottom:1.5rem;text-align:center;">¿Qué servicio te interesa?</h3>
 
-      <!-- Éxito (oculto hasta enviar) -->
-      <div class="booking-success" id="bookingSuccess">
-        <div class="booking-success-icon">✓</div>
-        <h3 style="font-size:1.7rem;font-family:'Nunito',sans-serif;">¡Cita agendada!</h3>
-        <p style="color:var(--gray-500);margin-top:0.5rem;">Hemos recibido tu solicitud. Te contactaremos por WhatsApp para confirmar.</p>
-        <div class="booking-success-details" id="bookingSuccessDetails"></div>
-        <a id="bookingWaBtn" href="https://wa.me/50254626994" target="_blank" class="btn btn-whatsapp" style="margin:1.5rem auto 0;display:inline-flex;align-items:center;gap:0.5rem;">
-          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.371-.025-.520-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
-          Confirmar por WhatsApp
+      <div class="booking-services">
+        <button type="button" class="booking-service-btn" data-svc="Conocer Mascota" onclick="selectBookingService(this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="9.5" cy="3.25" rx="2.1" ry="2.75"/><ellipse cx="14.5" cy="3.25" rx="2.1" ry="2.75"/><ellipse cx="3.75" cy="7.5" rx="1.9" ry="2.5"/><ellipse cx="20.25" cy="7.5" rx="1.9" ry="2.5"/><path d="M12 22C8 22 5.5 18.5 5.5 16C5.5 13.5 7.5 11.5 10 12C10.9 12.2 11.4 12.8 12 12.8C12.6 12.8 13.1 12.2 14 12C16.5 11.5 18.5 13.5 18.5 16C18.5 18.5 16 22 12 22Z"/></svg>
+          Conocer Mascota
+        </button>
+        <button type="button" class="booking-service-btn" data-svc="Grooming" onclick="selectBookingService(this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+          Grooming
+        </button>
+        <button type="button" class="booking-service-btn" data-svc="Consulta" onclick="selectBookingService(this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+          Consulta
+        </button>
+      </div>
+
+      <div class="booking-divider"></div>
+
+      <div style="text-align:center;">
+        <p style="color:var(--gray-500);font-size:0.95rem;margin-bottom:1.75rem;line-height:1.6;">
+          Selecciona un servicio y luego elige tu horario en el calendario.<br>
+          Recibirás confirmación automática por email. Para cualquier consulta escríbenos por WhatsApp.
+        </p>
+        <a href="https://calendar.app.google/NG2o6jaqDcRmcPaa6" target="_blank" rel="noopener" class="btn btn-primary btn-agenda-cal" id="btnAgendaCal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Elegir fecha y hora disponible →
         </a>
-        <br>
-        <button onclick="resetBookingForm()" class="btn btn-ghost" style="margin-top:1rem;">Agendar otra cita</button>
+        <p style="font-size:0.78rem;color:var(--gray-300);margin-top:1rem;">
+          Se abre en una nueva pestaña · Google Calendar · Sin costo
+        </p>
       </div>
-
-      <!-- Formulario -->
-      <div id="bookingFormWrap">
-        <h3 style="font-family:'Nunito',sans-serif;font-size:1.4rem;margin-bottom:1.5rem;text-align:center;">¿Qué servicio te interesa?</h3>
-        <div class="booking-services">
-          <button type="button" class="booking-service-btn" data-svc="Conocer Mascota" onclick="selectBookingService(this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="9.5" cy="3.25" rx="2.1" ry="2.75"/><ellipse cx="14.5" cy="3.25" rx="2.1" ry="2.75"/><ellipse cx="3.75" cy="7.5" rx="1.9" ry="2.5"/><ellipse cx="20.25" cy="7.5" rx="1.9" ry="2.5"/><path d="M12 22C8 22 5.5 18.5 5.5 16C5.5 13.5 7.5 11.5 10 12C10.9 12.2 11.4 12.8 12 12.8C12.6 12.8 13.1 12.2 14 12C16.5 11.5 18.5 13.5 18.5 16C18.5 18.5 16 22 12 22Z"/></svg>
-            Conocer Mascota
-          </button>
-          <button type="button" class="booking-service-btn" data-svc="Grooming" onclick="selectBookingService(this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
-            Grooming
-          </button>
-          <button type="button" class="booking-service-btn" data-svc="Consulta" onclick="selectBookingService(this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
-            Consulta
-          </button>
-        </div>
-
-        <form class="form-grid" id="bookingForm" onsubmit="return false;">
-          <input type="hidden" id="bookingServicio" name="servicio" value="">
-          <div class="form-group">
-            <label>Nombre completo *</label>
-            <input type="text" class="input" id="bNombre" required placeholder="Tu nombre completo">
-          </div>
-          <div class="form-group">
-            <label>Teléfono (WhatsApp) *</label>
-            <input type="tel" class="input" id="bTelefono" required placeholder="+502 XXXX XXXX">
-          </div>
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" class="input" id="bEmail" placeholder="tu@email.com">
-          </div>
-          <div class="form-group">
-            <label>Mascota / Raza de interés</label>
-            <input type="text" class="input" id="bMascota" placeholder="Ej: Golden Retriever">
-          </div>
-          <div class="form-group full">
-            <label>Fecha preferida *</label>
-            <input type="date" class="input" id="bFecha" required>
-          </div>
-          <div class="form-group full" id="slotsWrap">
-            <label>Horario disponible * <span id="slotsDateLabel" style="color:var(--gray-500);font-weight:400;font-size:0.8rem;"></span></label>
-            <div class="slots-area" id="slotsArea"><span class="slots-msg">← Selecciona una fecha para ver los horarios</span></div>
-            <input type="hidden" id="bHora" value="">
-          </div>
-          <div class="form-group full">
-            <label>Notas adicionales</label>
-            <textarea class="textarea" id="bNotas" placeholder="¿Algo más que debamos saber?"></textarea>
-          </div>
-          <div class="form-group full">
-            <button type="button" class="btn btn-primary" id="bookingSubmitBtn" onclick="submitBookingForm()" style="width:100%;padding:1.1rem;font-size:1rem;">
-              Agendar Cita
-            </button>
-          </div>
-        </form>
-      </div>
-
     </div>
   </div>
 </section>
@@ -2424,139 +2374,11 @@ function populateRazas() {
 loadMascotas();
 
 /* ============================================
-   AGENDA — booking form with live availability
+   AGENDA — Google Calendar booking
    ============================================ */
-const CALENDAR_URL = 'https://script.google.com/macros/s/AKfycbyQY5bKvVj5IHeIc9FuFY1cx74H8CArga0X-j2QRpl726sVHmJihF4hdbAQ7a_oAJZd/exec';
-const ALL_SLOTS = ['08:00','09:00','10:00','11:00','14:00','15:00','16:00'];
-
-(function() {
-  var today = new Date().toISOString().slice(0, 10);
-  document.getElementById('bFecha').min = today;
-})();
-
 function selectBookingService(btn) {
   document.querySelectorAll('.booking-service-btn').forEach(function(b) { b.classList.remove('selected'); });
   btn.classList.add('selected');
-  document.getElementById('bookingServicio').value = btn.dataset.svc;
-}
-
-function renderSlots(slots) {
-  var area = document.getElementById('slotsArea');
-  document.getElementById('bHora').value = '';
-  area.innerHTML = '';
-  if (!slots || slots.length === 0) {
-    area.innerHTML = '<span class="slots-msg" style="color:var(--coral);">Sin disponibilidad ese día — elige otra fecha.</span>';
-    return;
-  }
-  slots.forEach(function(h) {
-    var btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'slot-btn';
-    btn.textContent = h;
-    btn.addEventListener('click', function() {
-      area.querySelectorAll('.slot-btn').forEach(function(b) { b.classList.remove('selected'); });
-      btn.classList.add('selected');
-      document.getElementById('bHora').value = h;
-    });
-    area.appendChild(btn);
-  });
-}
-
-function loadSlotsForDate(date) {
-  if (!date) return;
-  var area = document.getElementById('slotsArea');
-  var months = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-  var parts = date.split('-');
-  document.getElementById('slotsDateLabel').textContent =
-    '— ' + parseInt(parts[2]) + ' ' + months[parseInt(parts[1])-1] + ' ' + parts[0];
-  document.getElementById('bHora').value = '';
-  area.innerHTML = '<span class="slots-msg">Consultando disponibilidad...</span>';
-  fetch(CALENDAR_URL + '?date=' + date)
-    .then(function(r) { return r.json(); })
-    .then(function(data) { renderSlots(data.available || ALL_SLOTS); })
-    .catch(function() { renderSlots(ALL_SLOTS); });
-}
-
-var fechaInput = document.getElementById('bFecha');
-fechaInput.addEventListener('change', function() { loadSlotsForDate(this.value); });
-fechaInput.addEventListener('blur',   function() { if (this.value) loadSlotsForDate(this.value); });
-fechaInput.addEventListener('input',  function() { if (this.value) loadSlotsForDate(this.value); });
-
-async function submitBookingForm() {
-  var servicio  = document.getElementById('bookingServicio').value;
-  var nombre    = document.getElementById('bNombre').value.trim();
-  var telefono  = document.getElementById('bTelefono').value.trim();
-  var fecha     = document.getElementById('bFecha').value;
-  var hora      = document.getElementById('bHora').value;
-  var email     = document.getElementById('bEmail').value.trim();
-  var mascota   = document.getElementById('bMascota').value.trim();
-  var notas     = document.getElementById('bNotas').value.trim();
-
-  if (!servicio) { alert('Por favor selecciona un servicio.'); return; }
-  if (!nombre)   { alert('Por favor ingresa tu nombre.'); return; }
-  if (!telefono) { alert('Por favor ingresa tu teléfono.'); return; }
-  if (!fecha)    { alert('Por favor selecciona una fecha.'); return; }
-  if (!hora)     { alert('Por favor selecciona un horario disponible.'); return; }
-
-  var btn = document.getElementById('bookingSubmitBtn');
-  btn.disabled = true;
-  btn.textContent = 'Agendando...';
-
-  try {
-    await fetch(CALENDAR_URL, {
-      method: 'POST',
-      body: JSON.stringify({
-        nombre_dueno:   nombre,
-        telefono:       telefono,
-        nombre_mascota: mascota || 'Por definir',
-        especie:        'Mascota',
-        servicio:       servicio,
-        fecha:          fecha,
-        hora:           hora,
-        email:          email,
-        notas:          notas
-      })
-    });
-  } catch(e) { /* silencioso */ }
-
-  btn.disabled = false;
-  btn.textContent = 'Agendar Cita';
-
-  var details = document.getElementById('bookingSuccessDetails');
-  details.innerHTML =
-    '<div><span class="lbl">Servicio</span><span class="val">' + servicio + '</span></div>' +
-    (mascota ? '<div><span class="lbl">Mascota / Raza</span><span class="val">' + mascota + '</span></div>' : '') +
-    '<div><span class="lbl">Fecha</span><span class="val">' + fecha + '</span></div>' +
-    '<div><span class="lbl">Hora</span><span class="val">' + hora + '</span></div>' +
-    '<div><span class="lbl">Nombre</span><span class="val">' + nombre + '</span></div>' +
-    '<div><span class="lbl">Teléfono</span><span class="val">' + telefono + '</span></div>';
-
-  var waMsg = encodeURIComponent(
-    'Hola PetShop GT 🐾 Quiero confirmar mi cita:\n' +
-    '• Servicio: ' + servicio + '\n' +
-    (mascota ? '• Mascota/Raza: ' + mascota + '\n' : '') +
-    '• Fecha: ' + fecha + '\n' +
-    '• Hora: ' + hora + '\n' +
-    '• Nombre: ' + nombre + '\n' +
-    '• Teléfono: ' + telefono +
-    (email ? '\n• Email: ' + email : '')
-  );
-  document.getElementById('bookingWaBtn').href = 'https://wa.me/50254626994?text=' + waMsg;
-
-  document.getElementById('bookingFormWrap').style.display = 'none';
-  document.getElementById('bookingSuccess').classList.add('show');
-  document.getElementById('agenda').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function resetBookingForm() {
-  document.getElementById('bookingForm').reset();
-  document.querySelectorAll('.booking-service-btn').forEach(function(b) { b.classList.remove('selected'); });
-  document.getElementById('bookingServicio').value = '';
-  document.getElementById('bHora').value = '';
-  document.getElementById('slotsDateLabel').textContent = '';
-  document.getElementById('slotsArea').innerHTML = '<span class="slots-msg">← Selecciona una fecha para ver los horarios</span>';
-  document.getElementById('bookingFormWrap').style.display = 'block';
-  document.getElementById('bookingSuccess').classList.remove('show');
 }
 
 document.querySelectorAll('.service-btn[data-service]').forEach(function(b) {
