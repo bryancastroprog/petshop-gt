@@ -2582,12 +2582,13 @@ function setStep(n) {
   document.getElementById('stepsIndicator').style.setProperty('--progress', pct + '%');
 }
 
-// Step 1
+// Step 1 — clicking a service advances directly to step 2
 function selectServicio(el) {
   document.querySelectorAll('.service-option').forEach(x => x.classList.remove('selected'));
   el.classList.add('selected');
   booking.servicio = el.dataset.svc;
-  document.getElementById('next1').disabled = false;
+  buildCalendar();
+  setStep(2);
 }
 document.querySelectorAll('.service-option').forEach(o => {
   o.addEventListener('click', () => selectServicio(o));
