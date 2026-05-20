@@ -2570,16 +2570,21 @@ let currentStep = 1;
 
 function setStep(n) {
   currentStep = n;
-  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
-  document.querySelector(`.step-panel[data-panel="${n}"]`).classList.add('active');
-  document.querySelectorAll('.step-dot').forEach(d => {
-    const s = +d.dataset.step;
+  document.querySelectorAll('.step-panel').forEach(function(p) {
+    p.classList.remove('active');
+    p.style.display = 'none';
+  });
+  var panel = document.querySelector('.step-panel[data-panel="' + n + '"]');
+  if (panel) { panel.classList.add('active'); panel.style.display = 'block'; panel.style.opacity = '1'; }
+  document.querySelectorAll('.step-dot').forEach(function(d) {
+    var s = +d.dataset.step;
     d.classList.remove('active', 'done');
     if (s < n) d.classList.add('done');
     if (s === n) d.classList.add('active');
   });
-  const pct = ((n - 1) / 3) * (100 - (60 / 820 * 100));
+  var pct = ((n - 1) / 3) * (100 - (60 / 820 * 100));
   document.getElementById('stepsIndicator').style.setProperty('--progress', pct + '%');
+  document.getElementById('agenda').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // Step 1 — clicking a service advances directly to step 2
