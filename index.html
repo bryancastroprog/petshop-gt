@@ -1962,7 +1962,7 @@ label {
         </div>
         <div class="step-nav">
           <span></span>
-          <button class="btn btn-primary" id="next1">Continuar →</button>
+          <button class="btn btn-primary" id="next1" onclick="if(!booking.servicio){alert('Selecciona un servicio primero.');return;}buildCalendar();setStep(2);">Continuar →</button>
         </div>
       </div>
 
