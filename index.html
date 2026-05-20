@@ -2675,24 +2675,41 @@ async function selectDay(date, el) {
 document.getElementById('next2').addEventListener('click', () => setStep(3));
 document.querySelectorAll('[data-back]').forEach(b => b.addEventListener('click', () => setStep(+b.dataset.back)));
 
+const CALENDAR_URL = 'https://script.google.com/macros/s/AKfycbxUi3CLJ7E1PUAV1TjIoaVb16i5K82NJDnUNfQ_RQMf_tPebFNxdNCEkxoCQBkSRnYD/exec';
+const svcNames = { conocer: 'Conocer Mascota', grooming: 'Grooming', consulta: 'Consulta' };
+
 // Step 3 — submit
 document.getElementById('submitBooking').addEventListener('click', async () => {
   const form = document.getElementById('bookingForm');
   const fd = new FormData(form);
   const data = Object.fromEntries(fd.entries());
-  if (!data.nombre || !data.telefono || !data.email) {
-    alert('Por favor completa los campos obligatorios.');
+  if (!data.nombre || !data.telefono) {
+    alert('Por favor completa nombre y teléfono.');
     return;
   }
-  booking.datos = data;
-  const payload = {
-    servicio: booking.servicio,
-    fecha: booking.fecha,
-    hora: booking.hora,
-    ...data
-  };
-  // Confirmation
-  const svcNames = { conocer: 'Conocer Mascota', grooming: 'Grooming', consulta: 'Consulta' };
+  const btn = document.getElementById('submitBooking');
+  btn.disabled = true;
+  btn.textContent = 'Agendando...';
+
+  try {
+    await fetch(CALENDAR_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        nombre_dueno:   data.nombre,
+        telefono:       data.telefono,
+        nombre_mascota: data.mascota_interes || 'Mascota',
+        especie:        'Mascota',
+        servicio:       svcNames[booking.servicio] || booking.servicio,
+        fecha:          booking.fecha,
+        hora:           booking.hora,
+        notas:          data.notas || ''
+      })
+    });
+  } catch(e) { /* silencioso — la cita igual se muestra */ }
+
+  btn.disabled = false;
+  btn.textContent = 'Confirmar cita';
+
   const summary = document.getElementById('confirmSummary');
   summary.innerHTML = `
     <div><span>Servicio:</span><span>${svcNames[booking.servicio] || '—'}</span></div>
@@ -2701,7 +2718,6 @@ document.getElementById('submitBooking').addEventListener('click', async () => {
     <div><span>Nombre:</span><span>${data.nombre}</span></div>
     <div><span>Teléfono:</span><span>${data.telefono}</span></div>
   `;
-  // Pre-fill WhatsApp with booking details
   const waMsg = encodeURIComponent(`Hola PetShop GT 🐾 Quiero confirmar mi cita:\n• Servicio: ${svcNames[booking.servicio]}\n• Fecha: ${booking.fecha}\n• Hora: ${booking.hora}\n• Nombre: ${data.nombre}\n• Teléfono: ${data.telefono}`);
   document.getElementById('waConfirmBtn').href = `https://wa.me/50254626994?text=${waMsg}`;
   setStep(4);
