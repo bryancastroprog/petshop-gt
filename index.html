@@ -856,161 +856,37 @@ h3 { font-size: 1.35rem; }
   padding: 3rem;
   box-shadow: var(--shadow-lg);
 }
-.steps-indicator {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 3rem;
-  position: relative;
-}
-.steps-indicator::before {
-  content: '';
-  position: absolute;
-  top: 22px;
-  left: 30px;
-  right: 30px;
-  height: 2px;
-  background: var(--gray-200);
-  z-index: 0;
-}
-.steps-indicator::after {
-  content: '';
-  position: absolute;
-  top: 22px;
-  left: 30px;
-  height: 2px;
-  background: var(--teal);
-  z-index: 1;
-  width: var(--progress, 0%);
-  transition: width 0.5s var(--ease);
-}
-.step-dot {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  flex: 1;
-}
-.step-circle {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--white);
-  border: 2px solid var(--gray-200);
-  color: var(--gray-500);
-  display: grid;
-  place-items: center;
-  font-weight: 700;
-  transition: all 0.4s var(--ease);
-}
-.step-dot.active .step-circle {
-  background: var(--teal);
-  border-color: var(--teal);
-  color: var(--white);
-  box-shadow: 0 0 0 6px rgba(34, 191, 192, 0.2);
-}
-.step-dot.done .step-circle {
-  background: var(--teal-dark);
-  border-color: var(--teal-dark);
-  color: var(--white);
-}
-.step-label {
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--gray-500);
-  text-align: center;
-}
-.step-dot.active .step-label,
-.step-dot.done .step-label { color: var(--navy); }
-
-.step-panel { display: none; animation: slideIn 0.5s var(--ease); }
-.step-panel.active { display: block; }
-@keyframes slideIn {
-  from { opacity: 0; transform: translateX(20px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-.step-panel h3 { font-family: 'Nunito', sans-serif; font-size: 1.5rem; margin-bottom: 1.5rem; text-align: center; }
-
-.service-options {
+.booking-services {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
+  margin-bottom: 2rem;
 }
-.service-option {
-  padding: 1.75rem 1rem;
+.booking-service-btn {
+  padding: 1.5rem 1rem;
   border: 2px solid var(--gray-200);
   border-radius: var(--radius-md);
   text-align: center;
   cursor: pointer;
   transition: all 0.3s var(--ease);
   background: var(--white);
-}
-.service-option:hover { border-color: var(--teal); transform: translateY(-3px); }
-.service-option.selected {
-  border-color: var(--teal);
-  background: var(--teal-soft);
-  box-shadow: 0 8px 24px rgba(34, 191, 192, 0.2);
-}
-.service-option-icon { font-size: 2.5rem; margin-bottom: 0.5rem; display: grid; place-items: center; height: 44px; }
-.service-option-icon svg { width: 40px; height: 40px; color: var(--navy); }
-.service-option.selected .service-option-icon svg { color: var(--teal); }
-.service-option-name { font-weight: 600; font-size: 0.95rem; }
-
-.calendar {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
-}
-.day-head {
-  text-align: center;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--gray-500);
-  padding: 0.5rem 0;
-}
-.day {
-  aspect-ratio: 1;
-  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--navy);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.25s;
-  font-size: 0.95rem;
-  background: var(--teal-soft);
-  color: var(--navy);
-  font-weight: 500;
-}
-.day:hover:not(.disabled) { background: var(--teal); color: var(--white); transform: scale(1.05); }
-.day.disabled { background: var(--gray-100); color: var(--gray-300); cursor: not-allowed; }
-.day.selected { background: var(--teal); color: var(--white); box-shadow: 0 4px 14px rgba(34, 191, 192, 0.4); }
-.day-num { font-weight: 700; }
-.day-month { font-size: 0.65rem; opacity: 0.7; }
-
-.slots {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
   gap: 0.5rem;
-  margin-top: 1rem;
-  min-height: 50px;
 }
-.slot {
-  padding: 0.7rem;
-  border: 1.5px solid var(--gray-200);
-  border-radius: var(--radius-sm);
-  text-align: center;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s;
+.booking-service-btn:hover { border-color: var(--teal); background: var(--teal-soft); transform: translateY(-2px); }
+.booking-service-btn.selected {
+  border-color: var(--teal);
+  background: var(--teal-soft);
+  box-shadow: 0 8px 24px rgba(34,191,192,0.2);
+  color: var(--teal-dark);
 }
-.slot:hover { border-color: var(--teal); color: var(--teal); }
-.slot.selected { background: var(--teal); border-color: var(--teal); color: var(--white); }
+.booking-service-btn svg { width: 36px; height: 36px; }
 
 .form-grid {
   display: grid;
@@ -1048,44 +924,35 @@ label {
 }
 .textarea { resize: vertical; min-height: 100px; }
 
-.step-nav {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 2rem;
-  gap: 1rem;
-}
-
-.confirmation {
+.booking-success {
+  display: none;
   text-align: center;
-  padding: 2rem 1rem;
+  padding: 3rem 1rem;
 }
-.confirm-check {
-  width: 90px;
-  height: 90px;
+.booking-success.show { display: block; }
+.booking-success-icon {
+  width: 80px;
+  height: 80px;
   margin: 0 auto 1.5rem;
   background: var(--teal);
   border-radius: 50%;
   display: grid;
   place-items: center;
   color: var(--white);
-  font-size: 3rem;
-  animation: popIn 0.5s var(--ease-bounce);
+  font-size: 2.5rem;
 }
-@keyframes popIn {
-  0% { transform: scale(0); }
-  100% { transform: scale(1); }
-}
-.confirm-summary {
+.booking-success-details {
   text-align: left;
   background: var(--gray-50);
-  padding: 1.5rem;
+  padding: 1.25rem 1.5rem;
   border-radius: var(--radius-md);
   margin: 1.5rem auto;
   max-width: 400px;
 }
-.confirm-summary div { display: flex; justify-content: space-between; padding: 0.4rem 0; }
-.confirm-summary div span:first-child { color: var(--gray-500); font-size: 0.85rem; }
-.confirm-summary div span:last-child { font-weight: 600; }
+.booking-success-details div { display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px solid var(--gray-100); }
+.booking-success-details div:last-child { border-bottom: none; }
+.booking-success-details .lbl { color: var(--gray-500); font-size: 0.85rem; }
+.booking-success-details .val { font-weight: 600; font-size: 0.9rem; }
 
 /* ============================================
    GALERIA
@@ -1553,10 +1420,9 @@ label {
   .services-grid { grid-template-columns: 1fr; }
   .booking-card { padding: 2rem 1.25rem; }
   .form-grid { grid-template-columns: 1fr; }
-  .service-options { grid-template-columns: 1fr; }
+  .booking-services { grid-template-columns: 1fr; }
   .masonry { column-count: 2; }
   .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
-  .step-label { font-size: 0.65rem; }
   .hero { min-height: 600px; }
   .modal-meta { flex-direction: column; gap: 0.75rem; }
   .modal-actions { flex-direction: column; }
@@ -1931,111 +1797,91 @@ label {
   <div class="container">
     <div class="section-head fade-in">
       <span class="eyebrow">Agenda tu Cita</span>
-      <h2>Reserva tu visita en 3 pasos</h2>
-      <p class="lead">Selecciona el servicio, elige tu día y hora, y déjanos tus datos. Te confirmamos por WhatsApp.</p>
+      <h2>Reserva tu visita</h2>
+      <p class="lead">Completa el formulario y te confirmamos por WhatsApp en menos de 24 horas.</p>
     </div>
 
     <div class="booking-card fade-in">
-      <div class="steps-indicator" id="stepsIndicator">
-        <div class="step-dot active" data-step="1"><div class="step-circle">1</div><span class="step-label">Servicio</span></div>
-        <div class="step-dot" data-step="2"><div class="step-circle">2</div><span class="step-label">Fecha & Hora</span></div>
-        <div class="step-dot" data-step="3"><div class="step-circle">3</div><span class="step-label">Tus datos</span></div>
-        <div class="step-dot" data-step="4"><div class="step-circle">✓</div><span class="step-label">Confirmación</span></div>
+
+      <!-- Éxito (oculto hasta enviar) -->
+      <div class="booking-success" id="bookingSuccess">
+        <div class="booking-success-icon">✓</div>
+        <h3 style="font-size:1.7rem;font-family:'Nunito',sans-serif;">¡Cita agendada!</h3>
+        <p style="color:var(--gray-500);margin-top:0.5rem;">Hemos recibido tu solicitud. Te contactaremos por WhatsApp para confirmar.</p>
+        <div class="booking-success-details" id="bookingSuccessDetails"></div>
+        <a id="bookingWaBtn" href="https://wa.me/50254626994" target="_blank" class="btn btn-whatsapp" style="margin:1.5rem auto 0;display:inline-flex;align-items:center;gap:0.5rem;">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.371-.025-.520-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
+          Confirmar por WhatsApp
+        </a>
+        <br>
+        <button onclick="resetBookingForm()" class="btn btn-ghost" style="margin-top:1rem;">Agendar otra cita</button>
       </div>
 
-      <!-- Step 1 -->
-      <div class="step-panel active" data-panel="1">
-        <h3>¿Qué servicio te interesa?</h3>
-        <div class="service-options">
-          <div class="service-option" data-svc="conocer" onclick="selectServicio(this)">
-            <span class="service-option-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="9.5" cy="3.25" rx="2.1" ry="2.75"/><ellipse cx="14.5" cy="3.25" rx="2.1" ry="2.75"/><ellipse cx="3.75" cy="7.5" rx="1.9" ry="2.5"/><ellipse cx="20.25" cy="7.5" rx="1.9" ry="2.5"/><path d="M12 22C8 22 5.5 18.5 5.5 16C5.5 13.5 7.5 11.5 10 12C10.9 12.2 11.4 12.8 12 12.8C12.6 12.8 13.1 12.2 14 12C16.5 11.5 18.5 13.5 18.5 16C18.5 18.5 16 22 12 22Z"/></svg></span>
-            <div class="service-option-name">Conocer Mascota</div>
-          </div>
-          <div class="service-option" data-svc="grooming" onclick="selectServicio(this)">
-            <span class="service-option-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></span>
-            <div class="service-option-name">Grooming</div>
-          </div>
-          <div class="service-option" data-svc="consulta" onclick="selectServicio(this)">
-            <span class="service-option-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg></span>
-            <div class="service-option-name">Consulta</div>
-          </div>
+      <!-- Formulario -->
+      <div id="bookingFormWrap">
+        <h3 style="font-family:'Nunito',sans-serif;font-size:1.4rem;margin-bottom:1.5rem;text-align:center;">¿Qué servicio te interesa?</h3>
+        <div class="booking-services">
+          <button type="button" class="booking-service-btn" data-svc="Conocer Mascota" onclick="selectBookingService(this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="9.5" cy="3.25" rx="2.1" ry="2.75"/><ellipse cx="14.5" cy="3.25" rx="2.1" ry="2.75"/><ellipse cx="3.75" cy="7.5" rx="1.9" ry="2.5"/><ellipse cx="20.25" cy="7.5" rx="1.9" ry="2.5"/><path d="M12 22C8 22 5.5 18.5 5.5 16C5.5 13.5 7.5 11.5 10 12C10.9 12.2 11.4 12.8 12 12.8C12.6 12.8 13.1 12.2 14 12C16.5 11.5 18.5 13.5 18.5 16C18.5 18.5 16 22 12 22Z"/></svg>
+            Conocer Mascota
+          </button>
+          <button type="button" class="booking-service-btn" data-svc="Grooming" onclick="selectBookingService(this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+            Grooming
+          </button>
+          <button type="button" class="booking-service-btn" data-svc="Consulta" onclick="selectBookingService(this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+            Consulta
+          </button>
         </div>
-        <div class="step-nav">
-          <span></span>
-          <button class="btn btn-primary" id="next1" onclick="if(!booking.servicio){alert('Selecciona un servicio primero.');return;}buildCalendar();setStep(2);">Continuar → v6</button>
-        </div>
-      </div>
 
-      <!-- Step 2 -->
-      <div class="step-panel" data-panel="2">
-        <h3>Elige tu fecha y hora</h3>
-        <div id="calendarWrap">
-          <div class="calendar" id="calHead">
-            <div class="day-head">Lun</div>
-            <div class="day-head">Mar</div>
-            <div class="day-head">Mié</div>
-            <div class="day-head">Jue</div>
-            <div class="day-head">Vie</div>
-            <div class="day-head">Sáb</div>
-            <div class="day-head">Dom</div>
-          </div>
-          <div class="calendar" id="calBody"></div>
-        </div>
-        <div id="slotsLabel" style="font-size: 0.85rem; color: var(--gray-500); margin-top: 1.25rem; display: none;">Horarios disponibles:</div>
-        <div class="slots" id="slots"></div>
-        <div class="step-nav">
-          <button class="btn btn-ghost" data-back="1">← Atrás</button>
-          <button class="btn btn-primary" id="next2" disabled>Continuar →</button>
-        </div>
-      </div>
-
-      <!-- Step 3 -->
-      <div class="step-panel" data-panel="3">
-        <h3>Tus datos de contacto</h3>
         <form class="form-grid" id="bookingForm" onsubmit="return false;">
-          <div class="form-group full">
+          <input type="hidden" id="bookingServicio" name="servicio" value="">
+          <div class="form-group">
             <label>Nombre completo *</label>
-            <input type="text" class="input" name="nombre" required>
+            <input type="text" class="input" id="bNombre" required placeholder="Tu nombre completo">
           </div>
           <div class="form-group">
-            <label>Teléfono *</label>
-            <input type="tel" class="input" name="telefono" required placeholder="+502">
+            <label>Teléfono (WhatsApp) *</label>
+            <input type="tel" class="input" id="bTelefono" required placeholder="+502 XXXX XXXX">
           </div>
           <div class="form-group">
-            <label>Email *</label>
-            <input type="email" class="input" name="email" required>
+            <label>Email</label>
+            <input type="email" class="input" id="bEmail" placeholder="tu@email.com">
           </div>
-          <div class="form-group full">
-            <label>Raza / Mascota de interés</label>
-            <select class="select" name="raza" id="razaSelect">
-              <option value="">Selecciona una raza...</option>
-              <option value="otro">Otro</option>
+          <div class="form-group">
+            <label>Mascota / Raza de interés</label>
+            <input type="text" class="input" id="bMascota" placeholder="Ej: Golden Retriever">
+          </div>
+          <div class="form-group">
+            <label>Fecha preferida *</label>
+            <input type="date" class="input" id="bFecha" required>
+          </div>
+          <div class="form-group">
+            <label>Hora preferida *</label>
+            <select class="select" id="bHora" required>
+              <option value="">Selecciona una hora...</option>
+              <option value="08:00">08:00 AM</option>
+              <option value="09:00">09:00 AM</option>
+              <option value="10:00">10:00 AM</option>
+              <option value="11:00">11:00 AM</option>
+              <option value="14:00">02:00 PM</option>
+              <option value="15:00">03:00 PM</option>
+              <option value="16:00">04:00 PM</option>
             </select>
           </div>
           <div class="form-group full">
             <label>Notas adicionales</label>
-            <textarea class="textarea" name="notas" placeholder="¿Algo más que debamos saber?"></textarea>
+            <textarea class="textarea" id="bNotas" placeholder="¿Algo más que debamos saber?"></textarea>
+          </div>
+          <div class="form-group full">
+            <button type="button" class="btn btn-primary" id="bookingSubmitBtn" onclick="submitBookingForm()" style="width:100%;padding:1.1rem;font-size:1rem;">
+              Agendar Cita
+            </button>
           </div>
         </form>
-        <div class="step-nav">
-          <button class="btn btn-ghost" data-back="2">← Atrás</button>
-          <button class="btn btn-primary" id="submitBooking">Confirmar Cita ✓</button>
-        </div>
       </div>
 
-      <!-- Step 4 -->
-      <div class="step-panel" data-panel="4">
-        <div class="confirmation">
-          <div class="confirm-check">✓</div>
-          <h3 style="font-size: 1.7rem;">¡Cita confirmada!</h3>
-          <p style="color: var(--gray-500); margin-top: 0.5rem;">Hemos recibido tu solicitud. Te contactaremos por WhatsApp para confirmar.</p>
-          <div class="confirm-summary" id="confirmSummary"></div>
-          <a href="https://wa.me/50254626994" target="_blank" class="btn btn-whatsapp" id="waConfirmBtn">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.371-.025-.520-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>
-            Confirmar por WhatsApp
-          </a>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -2563,141 +2409,38 @@ function populateRazas() {
 loadMascotas();
 
 /* ============================================
-   AGENDA — 3-step booking
+   AGENDA — simple booking form
    ============================================ */
-const booking = { servicio: null, fecha: null, hora: null, datos: {} };
-let currentStep = 1;
-
-function setStep(n) {
-  currentStep = n;
-  document.querySelectorAll('.step-panel').forEach(function(p) {
-    p.classList.remove('active');
-    p.style.display = 'none';
-  });
-  var panel = document.querySelector('.step-panel[data-panel="' + n + '"]');
-  if (panel) { panel.classList.add('active'); panel.style.display = 'block'; panel.style.opacity = '1'; }
-  document.querySelectorAll('.step-dot').forEach(function(d) {
-    var s = +d.dataset.step;
-    d.classList.remove('active', 'done');
-    if (s < n) d.classList.add('done');
-    if (s === n) d.classList.add('active');
-  });
-  var pct = ((n - 1) / 3) * (100 - (60 / 820 * 100));
-  document.getElementById('stepsIndicator').style.setProperty('--progress', pct + '%');
-  document.getElementById('agenda').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-// Step 1 — clicking a service advances directly to step 2
-function selectServicio(el) {
-  document.querySelectorAll('.service-option').forEach(x => x.classList.remove('selected'));
-  el.classList.add('selected');
-  booking.servicio = el.dataset.svc;
-  try {
-    buildCalendar();
-    setStep(2);
-  } catch(e) {
-    alert('Error: ' + e.message);
-  }
-}
-document.querySelectorAll('.service-option').forEach(o => {
-  o.addEventListener('click', () => selectServicio(o));
-});
-document.getElementById('next1').addEventListener('click', () => {
-  if (!booking.servicio) { alert('Por favor selecciona un servicio.'); return; }
-  buildCalendar(); setStep(2);
-});
-
-// Pre-select service from service cards
-document.querySelectorAll('.service-btn[data-service]').forEach(b => {
-  b.addEventListener('click', (e) => {
-    e.preventDefault();
-    const svc = b.dataset.service;
-    document.getElementById('agenda').scrollIntoView({ behavior: 'smooth' });
-    setTimeout(() => {
-      document.querySelectorAll('.service-option').forEach(x => x.classList.remove('selected'));
-      const target = document.querySelector(`.service-option[data-svc="${svc}"]`);
-      if (target) { target.classList.add('selected'); booking.servicio = svc; document.getElementById('next1').disabled = false; }
-    }, 600);
-  });
-});
-
-// Step 2 — calendar
-function buildCalendar() {
-  const body = document.getElementById('calBody');
-  body.innerHTML = '';
-  const today = new Date();
-  // Find Monday of current week
-  const monday = new Date(today);
-  const wd = (today.getDay() + 6) % 7;
-  monday.setDate(today.getDate() - wd);
-  // 14 days starting Monday
-  const monthNames = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-  for (let i = 0; i < 14; i++) {
-    const d = new Date(monday);
-    d.setDate(monday.getDate() + i);
-    const dow = d.getDay(); // 0 sun, 6 sat
-    const isWeekend = (dow === 0 || dow === 6);
-    const isPast = d < new Date(today.toDateString());
-    const day = document.createElement('div');
-    day.className = 'day';
-    if (isWeekend || isPast) day.classList.add('disabled');
-    day.innerHTML = `<span class="day-num">${d.getDate()}</span><span class="day-month">${monthNames[d.getMonth()]}</span>`;
-    if (!isWeekend && !isPast) {
-      day.addEventListener('click', () => selectDay(d, day));
-    }
-    body.appendChild(day);
-  }
-}
-
-async function selectDay(date, el) {
-  document.querySelectorAll('.day').forEach(d => d.classList.remove('selected'));
-  el.classList.add('selected');
-  booking.fecha = date.toISOString().slice(0, 10);
-  booking.hora = null;
-  document.getElementById('next2').disabled = true;
-  document.getElementById('slotsLabel').style.display = 'block';
-  const slotsEl = document.getElementById('slots');
-  slotsEl.innerHTML = '<div style="grid-column:1/-1;color:var(--gray-500);font-size:0.85rem;">Cargando disponibilidad...</div>';
-  let available = ['08:00', '09:00', '10:00', '11:00', '14:00', '15:00', '16:00'];
-  try {
-    const r = await fetch(`/api/disponibilidad?fecha=${booking.fecha}`);
-    if (r.ok) {
-      const j = await r.json();
-      if (Array.isArray(j) && j.length) available = j;
-      else if (j.horarios) available = j.horarios;
-    }
-  } catch {}
-  slotsEl.innerHTML = '';
-  available.forEach(h => {
-    const s = document.createElement('div');
-    s.className = 'slot';
-    s.textContent = h;
-    s.addEventListener('click', () => {
-      document.querySelectorAll('.slot').forEach(x => x.classList.remove('selected'));
-      s.classList.add('selected');
-      booking.hora = h;
-      document.getElementById('next2').disabled = false;
-    });
-    slotsEl.appendChild(s);
-  });
-}
-
-document.getElementById('next2').addEventListener('click', () => setStep(3));
-document.querySelectorAll('[data-back]').forEach(b => b.addEventListener('click', () => setStep(+b.dataset.back)));
-
 const CALENDAR_URL = 'https://script.google.com/macros/s/AKfycbxUi3CLJ7E1PUAV1TjIoaVb16i5K82NJDnUNfQ_RQMf_tPebFNxdNCEkxoCQBkSRnYD/exec';
-const svcNames = { conocer: 'Conocer Mascota', grooming: 'Grooming', consulta: 'Consulta' };
 
-// Step 3 — submit
-document.getElementById('submitBooking').addEventListener('click', async () => {
-  const form = document.getElementById('bookingForm');
-  const fd = new FormData(form);
-  const data = Object.fromEntries(fd.entries());
-  if (!data.nombre || !data.telefono) {
-    alert('Por favor completa nombre y teléfono.');
-    return;
-  }
-  const btn = document.getElementById('submitBooking');
+(function() {
+  var today = new Date().toISOString().slice(0, 10);
+  document.getElementById('bFecha').min = today;
+})();
+
+function selectBookingService(btn) {
+  document.querySelectorAll('.booking-service-btn').forEach(function(b) { b.classList.remove('selected'); });
+  btn.classList.add('selected');
+  document.getElementById('bookingServicio').value = btn.dataset.svc;
+}
+
+async function submitBookingForm() {
+  var servicio  = document.getElementById('bookingServicio').value;
+  var nombre    = document.getElementById('bNombre').value.trim();
+  var telefono  = document.getElementById('bTelefono').value.trim();
+  var fecha     = document.getElementById('bFecha').value;
+  var hora      = document.getElementById('bHora').value;
+  var email     = document.getElementById('bEmail').value.trim();
+  var mascota   = document.getElementById('bMascota').value.trim();
+  var notas     = document.getElementById('bNotas').value.trim();
+
+  if (!servicio) { alert('Por favor selecciona un servicio.'); return; }
+  if (!nombre)   { alert('Por favor ingresa tu nombre.'); return; }
+  if (!telefono) { alert('Por favor ingresa tu teléfono.'); return; }
+  if (!fecha)    { alert('Por favor selecciona una fecha.'); return; }
+  if (!hora)     { alert('Por favor selecciona una hora.'); return; }
+
+  var btn = document.getElementById('bookingSubmitBtn');
   btn.disabled = true;
   btn.textContent = 'Agendando...';
 
@@ -2705,35 +2448,57 @@ document.getElementById('submitBooking').addEventListener('click', async () => {
     await fetch(CALENDAR_URL, {
       method: 'POST',
       body: JSON.stringify({
-        nombre_dueno:   data.nombre,
-        telefono:       data.telefono,
-        nombre_mascota: data.mascota_interes || 'Mascota',
+        nombre_dueno:   nombre,
+        telefono:       telefono,
+        nombre_mascota: mascota || 'Mascota',
         especie:        'Mascota',
-        servicio:       svcNames[booking.servicio] || booking.servicio,
-        fecha:          booking.fecha,
-        hora:           booking.hora,
-        notas:          data.notas || ''
+        servicio:       servicio,
+        fecha:          fecha,
+        hora:           hora,
+        notas:          (email ? 'Email:' + email + ' | ' : '') + notas
       })
     });
-  } catch(e) { /* silencioso — la cita igual se muestra */ }
+  } catch(e) { /* silencioso */ }
 
   btn.disabled = false;
-  btn.textContent = 'Confirmar cita';
+  btn.textContent = 'Agendar Cita';
 
-  const summary = document.getElementById('confirmSummary');
-  summary.innerHTML = `
-    <div><span>Servicio:</span><span>${svcNames[booking.servicio] || '—'}</span></div>
-    <div><span>Fecha:</span><span>${booking.fecha || '—'}</span></div>
-    <div><span>Hora:</span><span>${booking.hora || '—'}</span></div>
-    <div><span>Nombre:</span><span>${data.nombre}</span></div>
-    <div><span>Teléfono:</span><span>${data.telefono}</span></div>
-  `;
-  const waMsg = encodeURIComponent(`Hola PetShop GT 🐾 Quiero confirmar mi cita:\n• Servicio: ${svcNames[booking.servicio]}\n• Fecha: ${booking.fecha}\n• Hora: ${booking.hora}\n• Nombre: ${data.nombre}\n• Teléfono: ${data.telefono}`);
-  document.getElementById('waConfirmBtn').href = `https://wa.me/50254626994?text=${waMsg}`;
-  setStep(4);
+  var details = document.getElementById('bookingSuccessDetails');
+  details.innerHTML =
+    '<div><span class="lbl">Servicio</span><span class="val">' + servicio + '</span></div>' +
+    '<div><span class="lbl">Fecha</span><span class="val">' + fecha + '</span></div>' +
+    '<div><span class="lbl">Hora</span><span class="val">' + hora + '</span></div>' +
+    '<div><span class="lbl">Nombre</span><span class="val">' + nombre + '</span></div>' +
+    '<div><span class="lbl">Teléfono</span><span class="val">' + telefono + '</span></div>';
+
+  var waMsg = encodeURIComponent('Hola PetShop GT 🐾 Quiero confirmar mi cita:\n• Servicio: ' + servicio + '\n• Fecha: ' + fecha + '\n• Hora: ' + hora + '\n• Nombre: ' + nombre + '\n• Teléfono: ' + telefono);
+  document.getElementById('bookingWaBtn').href = 'https://wa.me/50254626994?text=' + waMsg;
+
+  document.getElementById('bookingFormWrap').style.display = 'none';
+  document.getElementById('bookingSuccess').classList.add('show');
+  document.getElementById('agenda').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function resetBookingForm() {
+  document.getElementById('bookingForm').reset();
+  document.querySelectorAll('.booking-service-btn').forEach(function(b) { b.classList.remove('selected'); });
+  document.getElementById('bookingServicio').value = '';
+  document.getElementById('bookingFormWrap').style.display = 'block';
+  document.getElementById('bookingSuccess').classList.remove('show');
+}
+
+document.querySelectorAll('.service-btn[data-service]').forEach(function(b) {
+  b.addEventListener('click', function(e) {
+    e.preventDefault();
+    var svcMap = { conocer: 'Conocer Mascota', grooming: 'Grooming', consulta: 'Consulta' };
+    var svcVal = svcMap[b.dataset.service] || b.dataset.service;
+    document.getElementById('agenda').scrollIntoView({ behavior: 'smooth' });
+    setTimeout(function() {
+      var target = document.querySelector('.booking-service-btn[data-svc="' + svcVal + '"]');
+      if (target) selectBookingService(target);
+    }, 600);
+  });
 });
-
-setStep(1);
 
 /* ============================================
    GALERIA — masonry & lightbox
