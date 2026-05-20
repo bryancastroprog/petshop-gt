@@ -858,7 +858,7 @@ h3 { font-size: 1.35rem; }
 }
 .booking-services {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
   margin-bottom: 2rem;
 }
@@ -1433,7 +1433,7 @@ label {
   .services-grid { grid-template-columns: 1fr; }
   .booking-card { padding: 2rem 1.25rem; }
   .form-grid { grid-template-columns: 1fr; }
-  .booking-services { grid-template-columns: 1fr; }
+  .booking-services { grid-template-columns: repeat(2, 1fr); }
   .masonry { column-count: 2; }
   .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
   .hero { min-height: 600px; }
@@ -1829,6 +1829,10 @@ label {
         <button type="button" class="booking-service-btn" data-svc="Consulta" onclick="selectBookingService(this)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
           Consulta
+        </button>
+        <button type="button" class="booking-service-btn" data-svc="Vacunas" onclick="selectBookingService(this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2l4 4-10 10H8v-4L18 2z"/><path d="M8 18l-6 2 2-6"/><line x1="14" y1="6" x2="18" y2="10"/></svg>
+          Vacunas
         </button>
       </div>
 
