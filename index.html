@@ -1277,6 +1277,10 @@ label {
   transition: all 0.3s;
 }
 .testi-dot.active { background: var(--teal); width: 28px; border-radius: 100px; }
+.testi-wrap { display: flex; align-items: center; gap: 12px; max-width: 820px; margin: 3rem auto 0; }
+.testi-arrow { flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--teal); background: transparent; color: var(--teal); font-size: 1.2rem; cursor: pointer; transition: background .2s, color .2s; display: flex; align-items: center; justify-content: center; }
+.testi-arrow:hover { background: var(--teal); color: white; }
+.testi-wrap .testi-track { flex: 1; margin: 0; max-width: 100%; }
 
 /* ============================================
    CONTACTO
@@ -2116,7 +2120,9 @@ label {
       <h2>Familias que ya son felices</h2>
       <p class="lead">Historias reales de quienes encontraron a su mejor amigo con nosotros.</p>
     </div>
-    <div class="testi-track fade-in">
+    <div class="testi-wrap fade-in">
+      <button class="testi-arrow testi-prev" id="testiPrev" aria-label="Anterior">&#8592;</button>
+      <div class="testi-track">
       <div class="testi-card active">
         <img class="testi-avatar" src="static/images/mascotas/familia_morales.png" alt="Familia Morales">
         <div class="testi-stars">★★★★★</div>
@@ -2139,6 +2145,8 @@ label {
         <div class="testi-pet">Familia de Canela · Labrador adoptada · Mixco, Guatemala</div>
       </div>
       <div class="testi-dots" id="testiDots"></div>
+      </div>
+      <button class="testi-arrow testi-next" id="testiNext" aria-label="Siguiente">&#8594;</button>
     </div>
   </div>
 </section>
@@ -2173,7 +2181,33 @@ label {
           <div class="form-group full">
             <label>Raza / Animal de interés *</label>
             <select class="select" name="raza" id="contactRaza" required>
-              <option value="">Selecciona una raza...</option>
+              <option value="">Selecciona una opción...</option>
+              <optgroup label="🐕 Perros">
+                <option>Golden Retriever</option>
+                <option>Pomeranian</option>
+                <option>Yorkie</option>
+                <option>Jack Russell Terrier</option>
+                <option>Salchicha</option>
+                <option>Shih Tzu</option>
+                <option>Samoyedo</option>
+                <option>Schnauzer</option>
+                <option>Chihuahua</option>
+                <option>Chihuahua Papillon</option>
+                <option>French Bulldog</option>
+                <option>Poodle Toy</option>
+                <option>Corgi</option>
+                <option>Labrador Negro (adopción)</option>
+                <option>Beagle (adopción)</option>
+              </optgroup>
+              <optgroup label="🐈 Gatos">
+                <option>Scottish Fold</option>
+                <option>Gato Persa</option>
+              </optgroup>
+              <optgroup label="✂️ Servicios">
+                <option>Grooming</option>
+                <option>Vacunas</option>
+                <option>Pet Hotel</option>
+              </optgroup>
               <option value="otro">Otro</option>
             </select>
           </div>
@@ -2750,6 +2784,8 @@ function showTesti(i) {
   testiDots.children[i].classList.add('active');
   testiIdx = i;
 }
+document.getElementById('testiPrev').addEventListener('click', () => showTesti((testiIdx - 1 + testiCards.length) % testiCards.length));
+document.getElementById('testiNext').addEventListener('click', () => showTesti((testiIdx + 1) % testiCards.length));
 setInterval(() => showTesti((testiIdx + 1) % testiCards.length), 6000);
 
 /* ============================================
