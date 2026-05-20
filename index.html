@@ -1947,15 +1947,15 @@ label {
       <div class="step-panel active" data-panel="1">
         <h3>¿Qué servicio te interesa?</h3>
         <div class="service-options">
-          <div class="service-option" data-svc="conocer">
+          <div class="service-option" data-svc="conocer" onclick="selectServicio(this)">
             <span class="service-option-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="9.5" cy="3.25" rx="2.1" ry="2.75"/><ellipse cx="14.5" cy="3.25" rx="2.1" ry="2.75"/><ellipse cx="3.75" cy="7.5" rx="1.9" ry="2.5"/><ellipse cx="20.25" cy="7.5" rx="1.9" ry="2.5"/><path d="M12 22C8 22 5.5 18.5 5.5 16C5.5 13.5 7.5 11.5 10 12C10.9 12.2 11.4 12.8 12 12.8C12.6 12.8 13.1 12.2 14 12C16.5 11.5 18.5 13.5 18.5 16C18.5 18.5 16 22 12 22Z"/></svg></span>
             <div class="service-option-name">Conocer Mascota</div>
           </div>
-          <div class="service-option" data-svc="grooming">
+          <div class="service-option" data-svc="grooming" onclick="selectServicio(this)">
             <span class="service-option-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></span>
             <div class="service-option-name">Grooming</div>
           </div>
-          <div class="service-option" data-svc="consulta">
+          <div class="service-option" data-svc="consulta" onclick="selectServicio(this)">
             <span class="service-option-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg></span>
             <div class="service-option-name">Consulta</div>
           </div>
@@ -2583,13 +2583,14 @@ function setStep(n) {
 }
 
 // Step 1
+function selectServicio(el) {
+  document.querySelectorAll('.service-option').forEach(x => x.classList.remove('selected'));
+  el.classList.add('selected');
+  booking.servicio = el.dataset.svc;
+  document.getElementById('next1').disabled = false;
+}
 document.querySelectorAll('.service-option').forEach(o => {
-  o.addEventListener('click', () => {
-    document.querySelectorAll('.service-option').forEach(x => x.classList.remove('selected'));
-    o.classList.add('selected');
-    booking.servicio = o.dataset.svc;
-    document.getElementById('next1').disabled = false;
-  });
+  o.addEventListener('click', () => selectServicio(o));
 });
 document.getElementById('next1').addEventListener('click', () => { buildCalendar(); setStep(2); });
 
@@ -2905,6 +2906,9 @@ for (var j = 0; j < catBtns.length; j++) {
 }
 renderCat('todos');
 </script>
+
+<!-- Koko Chatbot Widget -->
+<script src="http://localhost:8000/static/widget.js" data-backend="http://localhost:8000"></script>
 
 </body>
 </html>
