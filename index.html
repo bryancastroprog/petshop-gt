@@ -1253,6 +1253,8 @@ label {
   font-size: 2rem;
   color: var(--white);
   font-weight: 700;
+  object-fit: cover;
+  object-position: center top;
 }
 .testi-stars { color: var(--gold); margin: 0.5rem 0 1rem; font-size: 1.1rem; letter-spacing: 0.15em; }
 .testi-text {
@@ -2116,21 +2118,21 @@ label {
     </div>
     <div class="testi-track fade-in">
       <div class="testi-card active">
-        <div class="testi-avatar" style="background: linear-gradient(135deg, var(--amber), var(--coral));">CM</div>
+        <img class="testi-avatar" src="static/images/mascotas/familia_morales.png" alt="Familia Morales">
         <div class="testi-stars">★★★★★</div>
         <p class="testi-text">"Adoptamos a Simón hace seis meses y cambió nuestra vida por completo. El equipo de PetShop GT nos guió en todo el proceso, nos explicaron su historia y nos dieron seguimiento después de llevárnoslo. Nuestros hijos lo adoran. ¡Gracias por conectarnos!"</p>
         <div class="testi-name">Claudia y Roberto Morales</div>
         <div class="testi-pet">Familia de Simón · Labrador adoptado · Zona 16, Guatemala</div>
       </div>
       <div class="testi-card">
-        <div class="testi-avatar" style="background: linear-gradient(135deg, var(--teal), var(--teal-dark));">FG</div>
+        <img class="testi-avatar" src="static/images/mascotas/familia_garcia.png" alt="Familia García-Pérez">
         <div class="testi-stars">★★★★★</div>
-        <p class="testi-text">"Buscábamos una mascota tranquila para nuestra abuelita y encontramos a Lola, una Beagle en adopción. Desde el primer día fue como si siempre hubiera vivido con nosotros. PetShop GT fue muy transparente, nos mostraron su ficha de salud y todo. ¡Recomendadísimos!"</p>
+        <p class="testi-text">"Buscábamos una mascota tranquila para nuestra abuelita y encontramos a nuestro French Bulldog en adopción. Desde el primer día fue como si siempre hubiera vivido con nosotros. PetShop GT fue muy transparente, nos mostraron su ficha de salud y todo. ¡Recomendadísimos!"</p>
         <div class="testi-name">Familia García-Pérez</div>
         <div class="testi-pet">Familia de Lola · Beagle adoptada · Antigua Guatemala</div>
       </div>
       <div class="testi-card">
-        <div class="testi-avatar" style="background: linear-gradient(135deg, var(--coral), var(--teal));">AE</div>
+        <img class="testi-avatar" src="static/images/mascotas/familia_estrada.png" alt="Familia Estrada">
         <div class="testi-stars">★★★★★</div>
         <p class="testi-text">"Yo era mamá primeriza de mascotas y tenía mil dudas. El personal de PetShop GT tuvo paciencia para explicarme todo: alimentación, vacunas, rutinas. Canela llegó a casa y mis hijos no se le despegan. Fue la mejor decisión que tomamos como familia."</p>
         <div class="testi-name">Andrea y Tomás Estrada</div>
@@ -2843,10 +2845,6 @@ function renderCat(filter) {
     }
     var waUrl = 'https://wa.me/50254626994?text=' + encodeURIComponent('Hola PetShop GT, me interesa: ' + p.nombre);
     var badge = p.adopcion ? '<span class="cat-badge-adopt">En adopcion</span>' : '';
-    var price = p.adopcion
-      ? '<span class="cat-price-adopt">Encuentra tu hogar!</span>'
-      : '<span class="cat-price-value">' + p.precio + '</span>';
-    var label = p.adopcion ? 'Adopcion responsable' : 'Desde';
 
     out += '<div class="cat-card" data-url="' + waUrl + '" onclick="catOpen(this)">';
     out += '<img class="cat-card-img" src="' + p.img + '" alt="' + p.nombre + '" loading="lazy">';
@@ -2854,8 +2852,7 @@ function renderCat(filter) {
     out += badge;
     out += '<div class="cat-card-name">' + p.nombre + '</div>';
     out += '<div class="cat-card-desc">' + p.desc + '</div>';
-    out += '<div class="cat-card-footer">';
-    out += '<div class="cat-price-wrap"><span class="cat-price-label">' + label + '</span>' + price + '</div>';
+    out += '<div class="cat-card-footer" style="justify-content:flex-end;">';
     out += '<a class="cat-wa-btn" href="' + waUrl + '" target="_blank" onclick="event.stopPropagation()">' + CAT_WA_SVG + '</a>';
     out += '</div></div></div>';
   }
