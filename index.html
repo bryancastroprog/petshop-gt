@@ -2587,8 +2587,12 @@ function selectServicio(el) {
   document.querySelectorAll('.service-option').forEach(x => x.classList.remove('selected'));
   el.classList.add('selected');
   booking.servicio = el.dataset.svc;
-  buildCalendar();
-  setStep(2);
+  try {
+    buildCalendar();
+    setStep(2);
+  } catch(e) {
+    alert('Error: ' + e.message);
+  }
 }
 document.querySelectorAll('.service-option').forEach(o => {
   o.addEventListener('click', () => selectServicio(o));
