@@ -1880,9 +1880,9 @@ label {
             <label>Fecha preferida *</label>
             <input type="date" class="input" id="bFecha" required>
           </div>
-          <div class="form-group full" id="slotsWrap" style="display:none;">
-            <label>Horarios disponibles * <span id="slotsDateLabel" style="color:var(--gray-500);font-weight:400;font-size:0.8rem;"></span></label>
-            <div class="slots-area" id="slotsArea"></div>
+          <div class="form-group full" id="slotsWrap">
+            <label>Horario disponible * <span id="slotsDateLabel" style="color:var(--gray-500);font-weight:400;font-size:0.8rem;"></span></label>
+            <div class="slots-area" id="slotsArea"><span class="slots-msg">← Selecciona una fecha para ver los horarios</span></div>
             <input type="hidden" id="bHora" value="">
           </div>
           <div class="form-group full">
@@ -2462,24 +2462,25 @@ function renderSlots(slots) {
   });
 }
 
-document.getElementById('bFecha').addEventListener('change', function() {
-  var date = this.value;
+function loadSlotsForDate(date) {
   if (!date) return;
-  var wrap = document.getElementById('slotsWrap');
   var area = document.getElementById('slotsArea');
   var months = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
   var parts = date.split('-');
   document.getElementById('slotsDateLabel').textContent =
     '— ' + parseInt(parts[2]) + ' ' + months[parseInt(parts[1])-1] + ' ' + parts[0];
-  wrap.style.display = 'block';
   document.getElementById('bHora').value = '';
   area.innerHTML = '<span class="slots-msg">Consultando disponibilidad...</span>';
-
   fetch(CALENDAR_URL + '?date=' + date)
     .then(function(r) { return r.json(); })
     .then(function(data) { renderSlots(data.available || ALL_SLOTS); })
     .catch(function() { renderSlots(ALL_SLOTS); });
-});
+}
+
+var fechaInput = document.getElementById('bFecha');
+fechaInput.addEventListener('change', function() { loadSlotsForDate(this.value); });
+fechaInput.addEventListener('blur',   function() { if (this.value) loadSlotsForDate(this.value); });
+fechaInput.addEventListener('input',  function() { if (this.value) loadSlotsForDate(this.value); });
 
 async function submitBookingForm() {
   var servicio  = document.getElementById('bookingServicio').value;
@@ -2552,8 +2553,8 @@ function resetBookingForm() {
   document.querySelectorAll('.booking-service-btn').forEach(function(b) { b.classList.remove('selected'); });
   document.getElementById('bookingServicio').value = '';
   document.getElementById('bHora').value = '';
-  document.getElementById('slotsWrap').style.display = 'none';
-  document.getElementById('slotsArea').innerHTML = '';
+  document.getElementById('slotsDateLabel').textContent = '';
+  document.getElementById('slotsArea').innerHTML = '<span class="slots-msg">← Selecciona una fecha para ver los horarios</span>';
   document.getElementById('bookingFormWrap').style.display = 'block';
   document.getElementById('bookingSuccess').classList.remove('show');
 }
