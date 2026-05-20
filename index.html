@@ -954,6 +954,29 @@ label {
 .booking-success-details .lbl { color: var(--gray-500); font-size: 0.85rem; }
 .booking-success-details .val { font-weight: 600; font-size: 0.9rem; }
 
+.slots-area {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.slot-btn {
+  padding: 0.65rem 0.5rem;
+  border: 1.5px solid var(--teal-light);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--teal-soft);
+  font-family: inherit;
+  color: var(--navy);
+}
+.slot-btn:hover { border-color: var(--teal); color: var(--teal-dark); background: var(--teal-light); }
+.slot-btn.selected { background: var(--teal); border-color: var(--teal); color: var(--white); box-shadow: 0 4px 12px rgba(34,191,192,0.3); }
+.slots-msg { color: var(--gray-500); font-size: 0.9rem; padding: 0.5rem 0; }
+
 /* ============================================
    GALERIA
    ============================================ */
@@ -1853,22 +1876,14 @@ label {
             <label>Mascota / Raza de interés</label>
             <input type="text" class="input" id="bMascota" placeholder="Ej: Golden Retriever">
           </div>
-          <div class="form-group">
+          <div class="form-group full">
             <label>Fecha preferida *</label>
             <input type="date" class="input" id="bFecha" required>
           </div>
-          <div class="form-group">
-            <label>Hora preferida *</label>
-            <select class="select" id="bHora" required>
-              <option value="">Selecciona una hora...</option>
-              <option value="08:00">08:00 AM</option>
-              <option value="09:00">09:00 AM</option>
-              <option value="10:00">10:00 AM</option>
-              <option value="11:00">11:00 AM</option>
-              <option value="14:00">02:00 PM</option>
-              <option value="15:00">03:00 PM</option>
-              <option value="16:00">04:00 PM</option>
-            </select>
+          <div class="form-group full" id="slotsWrap" style="display:none;">
+            <label>Horarios disponibles * <span id="slotsDateLabel" style="color:var(--gray-500);font-weight:400;font-size:0.8rem;"></span></label>
+            <div class="slots-area" id="slotsArea"></div>
+            <input type="hidden" id="bHora" value="">
           </div>
           <div class="form-group full">
             <label>Notas adicionales</label>
@@ -2409,9 +2424,10 @@ function populateRazas() {
 loadMascotas();
 
 /* ============================================
-   AGENDA — simple booking form
+   AGENDA — booking form with live availability
    ============================================ */
 const CALENDAR_URL = 'https://script.google.com/macros/s/AKfycbxUi3CLJ7E1PUAV1TjIoaVb16i5K82NJDnUNfQ_RQMf_tPebFNxdNCEkxoCQBkSRnYD/exec';
+const ALL_SLOTS = ['08:00','09:00','10:00','11:00','14:00','15:00','16:00'];
 
 (function() {
   var today = new Date().toISOString().slice(0, 10);
@@ -2423,6 +2439,47 @@ function selectBookingService(btn) {
   btn.classList.add('selected');
   document.getElementById('bookingServicio').value = btn.dataset.svc;
 }
+
+function renderSlots(slots) {
+  var area = document.getElementById('slotsArea');
+  document.getElementById('bHora').value = '';
+  area.innerHTML = '';
+  if (!slots || slots.length === 0) {
+    area.innerHTML = '<span class="slots-msg" style="color:var(--coral);">Sin disponibilidad ese día — elige otra fecha.</span>';
+    return;
+  }
+  slots.forEach(function(h) {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'slot-btn';
+    btn.textContent = h;
+    btn.addEventListener('click', function() {
+      area.querySelectorAll('.slot-btn').forEach(function(b) { b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      document.getElementById('bHora').value = h;
+    });
+    area.appendChild(btn);
+  });
+}
+
+document.getElementById('bFecha').addEventListener('change', function() {
+  var date = this.value;
+  if (!date) return;
+  var wrap = document.getElementById('slotsWrap');
+  var area = document.getElementById('slotsArea');
+  var months = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  var parts = date.split('-');
+  document.getElementById('slotsDateLabel').textContent =
+    '— ' + parseInt(parts[2]) + ' ' + months[parseInt(parts[1])-1] + ' ' + parts[0];
+  wrap.style.display = 'block';
+  document.getElementById('bHora').value = '';
+  area.innerHTML = '<span class="slots-msg">Consultando disponibilidad...</span>';
+
+  fetch(CALENDAR_URL + '?date=' + date)
+    .then(function(r) { return r.json(); })
+    .then(function(data) { renderSlots(data.available || ALL_SLOTS); })
+    .catch(function() { renderSlots(ALL_SLOTS); });
+});
 
 async function submitBookingForm() {
   var servicio  = document.getElementById('bookingServicio').value;
@@ -2438,7 +2495,7 @@ async function submitBookingForm() {
   if (!nombre)   { alert('Por favor ingresa tu nombre.'); return; }
   if (!telefono) { alert('Por favor ingresa tu teléfono.'); return; }
   if (!fecha)    { alert('Por favor selecciona una fecha.'); return; }
-  if (!hora)     { alert('Por favor selecciona una hora.'); return; }
+  if (!hora)     { alert('Por favor selecciona un horario disponible.'); return; }
 
   var btn = document.getElementById('bookingSubmitBtn');
   btn.disabled = true;
@@ -2450,12 +2507,13 @@ async function submitBookingForm() {
       body: JSON.stringify({
         nombre_dueno:   nombre,
         telefono:       telefono,
-        nombre_mascota: mascota || 'Mascota',
+        nombre_mascota: mascota || 'Por definir',
         especie:        'Mascota',
         servicio:       servicio,
         fecha:          fecha,
         hora:           hora,
-        notas:          (email ? 'Email:' + email + ' | ' : '') + notas
+        email:          email,
+        notas:          notas
       })
     });
   } catch(e) { /* silencioso */ }
@@ -2466,12 +2524,22 @@ async function submitBookingForm() {
   var details = document.getElementById('bookingSuccessDetails');
   details.innerHTML =
     '<div><span class="lbl">Servicio</span><span class="val">' + servicio + '</span></div>' +
+    (mascota ? '<div><span class="lbl">Mascota / Raza</span><span class="val">' + mascota + '</span></div>' : '') +
     '<div><span class="lbl">Fecha</span><span class="val">' + fecha + '</span></div>' +
     '<div><span class="lbl">Hora</span><span class="val">' + hora + '</span></div>' +
     '<div><span class="lbl">Nombre</span><span class="val">' + nombre + '</span></div>' +
     '<div><span class="lbl">Teléfono</span><span class="val">' + telefono + '</span></div>';
 
-  var waMsg = encodeURIComponent('Hola PetShop GT 🐾 Quiero confirmar mi cita:\n• Servicio: ' + servicio + '\n• Fecha: ' + fecha + '\n• Hora: ' + hora + '\n• Nombre: ' + nombre + '\n• Teléfono: ' + telefono);
+  var waMsg = encodeURIComponent(
+    'Hola PetShop GT 🐾 Quiero confirmar mi cita:\n' +
+    '• Servicio: ' + servicio + '\n' +
+    (mascota ? '• Mascota/Raza: ' + mascota + '\n' : '') +
+    '• Fecha: ' + fecha + '\n' +
+    '• Hora: ' + hora + '\n' +
+    '• Nombre: ' + nombre + '\n' +
+    '• Teléfono: ' + telefono +
+    (email ? '\n• Email: ' + email : '')
+  );
   document.getElementById('bookingWaBtn').href = 'https://wa.me/50254626994?text=' + waMsg;
 
   document.getElementById('bookingFormWrap').style.display = 'none';
@@ -2483,6 +2551,9 @@ function resetBookingForm() {
   document.getElementById('bookingForm').reset();
   document.querySelectorAll('.booking-service-btn').forEach(function(b) { b.classList.remove('selected'); });
   document.getElementById('bookingServicio').value = '';
+  document.getElementById('bHora').value = '';
+  document.getElementById('slotsWrap').style.display = 'none';
+  document.getElementById('slotsArea').innerHTML = '';
   document.getElementById('bookingFormWrap').style.display = 'block';
   document.getElementById('bookingSuccess').classList.remove('show');
 }
