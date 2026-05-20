@@ -2765,26 +2765,29 @@ document.getElementById('lightbox').addEventListener('click', (e) => {
 /* ============================================
    TESTIMONIALS carousel
    ============================================ */
-const testiCards = document.querySelectorAll('.testi-card');
-const testiDots = document.getElementById('testiDots');
-let testiIdx = 0;
+var _tCards = Array.from(document.querySelectorAll('.testi-card'));
+var _tDotsEl = document.getElementById('testiDots');
+var _tIdx = 0;
 
-testiCards.forEach((_, i) => {
-  const dot = document.createElement('div');
+_tCards.forEach(function(_, i) {
+  var dot = document.createElement('div');
   dot.className = 'testi-dot' + (i === 0 ? ' active' : '');
-  dot.addEventListener('click', () => showTesti(i));
-  testiDots.appendChild(dot);
+  dot.addEventListener('click', function() { _showTesti(i); });
+  _tDotsEl.appendChild(dot);
 });
-function showTesti(i) {
-  testiCards.forEach(c => c.classList.remove('active'));
-  testiDots.querySelectorAll('.testi-dot').forEach(d => d.classList.remove('active'));
-  testiCards[i].classList.add('active');
-  testiDots.children[i].classList.add('active');
-  testiIdx = i;
+
+function _showTesti(n) {
+  _tIdx = ((n % _tCards.length) + _tCards.length) % _tCards.length;
+  _tCards.forEach(function(card) { card.classList.remove('active'); });
+  _tCards[_tIdx].classList.add('active');
+  var dots = _tDotsEl.querySelectorAll('.testi-dot');
+  dots.forEach(function(d) { d.classList.remove('active'); });
+  if (dots[_tIdx]) dots[_tIdx].classList.add('active');
 }
-document.getElementById('testiPrev').addEventListener('click', () => showTesti((testiIdx - 1 + testiCards.length) % testiCards.length));
-document.getElementById('testiNext').addEventListener('click', () => showTesti((testiIdx + 1) % testiCards.length));
-setInterval(() => showTesti((testiIdx + 1) % testiCards.length), 6000);
+
+document.getElementById('testiPrev').addEventListener('click', function() { _showTesti(_tIdx - 1); });
+document.getElementById('testiNext').addEventListener('click', function() { _showTesti(_tIdx + 1); });
+setInterval(function() { _showTesti(_tIdx + 1); }, 6000);
 
 /* ============================================
    CONTACT form
