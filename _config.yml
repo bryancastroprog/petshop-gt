@@ -1,0 +1,12 @@
+# GitHub Pages (Jekyll): solo se usa para NO publicar archivos internos.
+# Los archivos sin front matter (index.html, imágenes) se publican tal cual.
+exclude:
+  # Backend Flask y scripts: no corren en GitHub Pages y exponen datos internos
+  - app.py
+  - "*.py"
+  - "static/images/mascotas/*.py"
+  # Originales pesados (4–7 MB): el sitio usa las versiones WebP de static/web/
+  - static/images/mascotas/
+  - static/images/hero.jpeg.png
+  - "static/images/clientes satisfechos/"
+  - static/mascotas/
