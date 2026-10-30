@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="Tienda de mascotas en Vista Hermosa, Zona 15: cachorros y gatos con vacunas al día, grooming, vacunas y asesoría. Más de 15 años en Guatemala." />
+<meta name="description" content="Tienda de mascotas en Vista Hermosa, Zona 15: cachorros con vacunas al día, adopción bajo consulta, grooming y asesoría. Más de 15 años en Guatemala." />
 <link rel="canonical" href="https://www.petshopgt502.com/" />
 <link rel="icon" type="image/png" href="static/images/isotipo_navy.png" />
 <meta name="theme-color" content="#009691" />
@@ -11,13 +11,13 @@
 <meta property="og:locale" content="es_GT" />
 <meta property="og:site_name" content="PetShop GT" />
 <meta property="og:title" content="PetShop GT | Cachorros y grooming en Zona 15, Guatemala" />
-<meta property="og:description" content="Tienda de mascotas en Vista Hermosa, Zona 15: cachorros y gatos con vacunas al día, grooming, vacunas y asesoría. Más de 15 años en Guatemala." />
+<meta property="og:description" content="Tienda de mascotas en Vista Hermosa, Zona 15: cachorros con vacunas al día, adopción bajo consulta, grooming y asesoría. Más de 15 años en Guatemala." />
 <meta property="og:url" content="https://www.petshopgt502.com/" />
 <meta property="og:image" content="https://www.petshopgt502.com/static/web/og-petshop-gt.jpg" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "PetStore", "@id": "https://www.petshopgt502.com/#tienda", "name": "PetShop GT", "url": "https://www.petshopgt502.com/", "description": "Tienda de mascotas en Vista Hermosa, Zona 15: cachorros y gatos con vacunas al día, grooming, vacunas y asesoría. Más de 15 años en Guatemala.", "image": "https://www.petshopgt502.com/static/web/og-petshop-gt.jpg", "logo": "https://www.petshopgt502.com/static/images/logo_primary_light.png", "telephone": "+502 5462 6994", "email": "info@petshopgt502.com", "address": {"@type": "PostalAddress", "streetAddress": "Boulevard Vista Hermosa 2, 22-74, Zona 15", "addressLocality": "Ciudad de Guatemala", "addressCountry": "GT"}, "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "opens": "09:00", "closes": "18:00"}], "areaServed": {"@type": "City", "name": "Ciudad de Guatemala"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "PetStore", "@id": "https://www.petshopgt502.com/#tienda", "name": "PetShop GT", "url": "https://www.petshopgt502.com/", "description": "Tienda de mascotas en Vista Hermosa, Zona 15: cachorros con vacunas al día, adopción bajo consulta, grooming y asesoría. Más de 15 años en Guatemala.", "image": "https://www.petshopgt502.com/static/web/og-petshop-gt.jpg", "logo": "https://www.petshopgt502.com/static/images/logo_primary_light.png", "telephone": "+502 5462 6994", "email": "info@petshopgt502.com", "address": {"@type": "PostalAddress", "streetAddress": "Boulevard Vista Hermosa 2, 22-74, Zona 15", "addressLocality": "Ciudad de Guatemala", "addressCountry": "GT"}, "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "opens": "09:00", "closes": "18:00"}], "areaServed": {"@type": "City", "name": "Ciudad de Guatemala"}}</script>
 <meta name="keywords" content="petshop guatemala, mascotas guatemala, cachorros, grooming, pedigree" />
 <title>PetShop GT | Cachorros y grooming en Zona 15, Guatemala</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1640,8 +1640,8 @@ html, body { overflow-x: clip; }
     <div class="hero-badge">Pedigree A+ · +15 años de experiencia</div>
     <h1>Cuidamos lo que <span class="accent">amas</span></h1>
     <p class="hero-sub">
-      Más de 15 años haciendo de cada mascota una parte de la familia. Razas certificadas
-      y un equipo apasionado por los animales en el corazón de Guatemala.
+      Más de 15 años haciendo de cada mascota una parte de la familia. Razas certificadas,
+      adopciones responsables bajo consulta y un equipo apasionado por los animales en el corazón de Guatemala.
     </p>
     <div class="hero-cta">
       <a href="#mascotas" class="btn btn-primary">Ver Mascotas →</a>
@@ -1815,7 +1815,7 @@ html, body { overflow-x: clip; }
     <div class="section-head fade-in">
       <span class="eyebrow">Nuestros Servicios</span>
       <h2>Una experiencia premium para tu mascota</h2>
-      <p class="lead">Más allá de la venta, te acompañamos en cada etapa con servicios de cuidado profesional.</p>
+      <p class="lead">Más allá de la venta y la adopción, te acompañamos en cada etapa con servicios de cuidado profesional.</p>
     </div>
     <div class="services-grid">
       <div class="service fade-in">
@@ -2281,6 +2281,7 @@ function populateRazas(list) {
     var opt = document.createElement('option');
     opt.value = p.nombre; opt.textContent = p.nombre; sel.appendChild(opt);
   });
+  var a = document.createElement('option'); a.value = 'adopcion'; a.textContent = 'Adopción (consultar disponibilidad)'; sel.appendChild(a);
   var o = document.createElement('option'); o.value = 'otro'; o.textContent = 'Otro'; sel.appendChild(o);
 }
 
